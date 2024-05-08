@@ -3,6 +3,7 @@ using Server.Mobiles;
 using Server.Commands;
 using System.Collections.Generic;
 using System.Linq;
+using Server.Items;
 
 namespace Server.Custom.Misc
 {
@@ -159,19 +160,18 @@ namespace Server.Custom.Misc
 
             PoweredPlayer = reader.ReadMobile();
 
-            int savedDay = reader.ReadInt();
-            int savedHour = reader.ReadInt();
-            int savedMinute = reader.ReadInt();
+            int day = reader.ReadInt();
+            int hour = reader.ReadInt();
+            int min = reader.ReadInt();
 
-            this.LastMoved = new DateTime(
-                LastMoved.Year,
-                LastMoved.Month,
-                savedDay,
-                savedHour,
-                savedMinute,
-                0); 
+            SetLastMoved(DateTime.Now, day, hour, min);
 
             PowerHourCommand.PowerPlayers.Add(this);
+        }
+
+        private void SetLastMoved(DateTime time, int day, int hour, int min)
+        {
+            LastMoved = new DateTime(time.Year, time.Month, day, hour, min, 0);
         }
     }
 }

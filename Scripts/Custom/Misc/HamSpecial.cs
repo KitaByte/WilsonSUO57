@@ -2,18 +2,18 @@ using Server.Items;
 
 namespace Server.Custom.Misc
 {
-    internal class Ham : Static
+    internal class HamSpecial : Static
     {
         private int totalMeat = 5;
 
         [Constructable]
-        public Ham(int left) : this()
+        public HamSpecial(int left) : this()
         {
             totalMeat = left;
         }
 
         [Constructable]
-        public Ham() : base(0x09D3)
+        public HamSpecial() : base(0x09D3)
         {
             Name = "Hame";
 
@@ -22,7 +22,7 @@ namespace Server.Custom.Misc
             Movable = true;
         }
 
-        public Ham(Serial serial) : base(serial)
+        public HamSpecial(Serial serial) : base(serial)
         {
         }
 
@@ -45,7 +45,7 @@ namespace Server.Custom.Misc
 
                 if (totalMeat > 0)
                 {
-                    Ham ham = new Ham(totalMeat);
+                    HamSpecial ham = new HamSpecial(totalMeat);
 
                     ham.MoveToWorld(Location, Map);
 

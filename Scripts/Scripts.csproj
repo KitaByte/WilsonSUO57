@@ -403,7 +403,7 @@
     <Compile Include="Custom\Misc\FeatherfetcherGloves.cs" />
     <Compile Include="Custom\Misc\GoldenFerret.cs" />
     <Compile Include="Custom\Misc\GoldenShovel.cs" />
-    <Compile Include="Custom\Misc\Ham.cs" />
+    <Compile Include="Custom\Misc\HamSpecial.cs" />
     <Compile Include="Custom\Misc\MovingPlatform.cs" />
     <Compile Include="Custom\Misc\ReferralTicket.cs" />
     <Compile Include="Custom\Misc\WilsonDev.cs" />
@@ -551,7 +551,6 @@
     <Compile Include="Custom\Misc\BloodMoon_Steed.cs" />
     <Compile Include="Custom\Misc\CursedSpirit.cs" />
     <Compile Include="Custom\Misc\CustomHorse.cs" />
-    <Compile Include="Custom\Misc\FrostCragSpireTeleporters.cs" />
     <Compile Include="Custom\Misc\GroundSpellItem.cs" />
     <Compile Include="Custom\Misc\LootLocator.cs" />
     <Compile Include="Custom\Misc\PlayerKiller.cs" />
