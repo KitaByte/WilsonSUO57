@@ -1,0 +1,15 @@
+MaxMob:15
+MinRange:10
+MaxRange:50
+MaxCrowd:1
+WaterChance:0.5
+WeatherChance:0.1
+StaticChance:0.1
+IsScaleSpawn:False
+Creature:0.1
+Common:1
+UnCommon:0.5
+Rare:0.1
+RiftSpawn:False
+DebugSpawn:False
+Version:1.0.0.2
