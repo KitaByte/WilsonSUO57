@@ -1,5 +1,5 @@
-using Server.Targeting;
 using System;
+using Server.Targeting;
 using System.Collections.Generic;
 
 namespace Server.Custom.MovementSystem
@@ -22,21 +22,7 @@ namespace Server.Custom.MovementSystem
         {
             if (SwimUtility.HasWater(from.Location, from.Map))
             {
-                if (PlayerStartLocations.TryGetValue(from, out Point3D location))
-                {
-                    from.MoveToWorld(location, from.Map);
-
-                    if (withCorpse)
-                    {
-                        from.Corpse.MoveToWorld(location, from.Map);
-
-                        from.SendMessage(53, "You and your corpse are washed up where you started!");
-                    }
-                    else
-                    {
-                        from.SendMessage(53, "You washed up where you started!");
-                    }
-                }
+                MovePlayer(from, withCorpse, 1);
 
                 SwimUtility.StopSwimming(from);
 
@@ -45,23 +31,50 @@ namespace Server.Custom.MovementSystem
 
             if (ClimbUtility.HasRock(from.Location, from.Map))
             {
-                if (PlayerStartLocations.TryGetValue(from, out Point3D location))
+                MovePlayer(from, withCorpse, 2);
+            }
+        }
+
+        private static void MovePlayer(Mobile from, bool withCorpse, int moveID)
+        {
+            if (PlayerStartLocations.TryGetValue(from, out Point3D location))
+            {
+                from.MoveToWorld(location, from.Map);
+
+                var message = ("", "");
+
+                switch (moveID)
                 {
-                    from.MoveToWorld(location, from.Map);
+                    case 1: // swimming
+                        {
+                            message.Item1 = "You and your corpse are washed up where you started!";
 
-                    if (withCorpse)
-                    {
-                        from.Corpse.MoveToWorld(location, from.Map);
+                            message.Item2 = "You washed up where you started!";
 
-                        from.SendMessage(53, "You and your corpse tumbled down to where you started!");
-                    }
-                    else
-                    {
-                        from.SendMessage(53, "You tumbled down to where you started!");
-                    }
+                            break;
+                        }
+
+                    case 2: // climbing
+                        {
+                            message.Item1 = "You and your corpse tumbled down to where you started!";
+
+                            message.Item2 = "You tumbled down to where you started!";
+
+                            break;
+                        }
                 }
 
-                return;
+                if (withCorpse && from.Corpse != null)
+                {
+                    from.Corpse.MoveToWorld(location, from.Map);
+
+                    from.SendMessage(53, message.Item1);
+                }
+                else
+                {
+
+                    from.SendMessage(53, message.Item2);
+                }
             }
         }
 
@@ -100,39 +113,37 @@ namespace Server.Custom.MovementSystem
             {
                 if ((!MoveSettings.SwimCasting && SwimUtility.HasWater(e.Mobile.Location, e.Mobile.Map)))
                 {
-                    e.Mobile.Mana = 0;
-
-                    Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
-                    {
-                        Target.Cancel(e.Mobile);
-
-                        e.Mobile.SendMessage(43, "Hands are busy swimming, mana drained!");
-                    });
+                    Move_CallBack(e.Mobile, "swimming");
                 }
 
                 if ((!MoveSettings.ClimbCasting && ClimbUtility.HasRock(e.Mobile.Location, e.Mobile.Map)))
                 {
-                    e.Mobile.Mana = 0;
-
-                    Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
-                    {
-                        Target.Cancel(e.Mobile);
-
-                        e.Mobile.SendMessage(43, "Hands are busy climbing, mana drained!");
-                    });
+                    Move_CallBack(e.Mobile, "climbing");
                 }
             }
         }
 
+        private static void Move_CallBack(Mobile from, string moveType)
+        {
+            from.Mana = 0;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
+            {
+                Target.Cancel(from);
+
+                from.SendMessage(43, $"Hands are busy {moveType}, mana drained!");
+            });
+        }
+
         private static void EventSink_Login(LoginEventArgs e)
         {
-            if (SwimUtility.HasWater(e.Mobile.Location, e.Mobile.Map))
-            {
-                SwimUtility.StartSwimming(e.Mobile);
-            }
-
             if (!MovePlayers.Contains(e.Mobile) && MoveSettings.AutoLogPlayer)
             {
+                if (SwimUtility.HasWater(e.Mobile.Location, e.Mobile.Map))
+                {
+                    SwimUtility.StartSwimming(e.Mobile);
+                }
+
                 MovePlayers.Add(e.Mobile);
             }
         }

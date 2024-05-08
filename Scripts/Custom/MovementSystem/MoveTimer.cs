@@ -19,10 +19,12 @@ namespace Server.Custom.MovementSystem
                 {
                     if (player != null && player.Alive)
                     {
-                        if (!player.HasGump(typeof(MovementGump)))
+                        if (player.HasGump(typeof(MovementGump)))
                         {
-                            BaseGump.SendGump(new MovementGump(player as PlayerMobile));
+                            player.CloseGump(typeof(MovementGump));
                         }
+
+                        BaseGump.SendGump(new MovementGump(player as PlayerMobile));
                     }
                 }
             }

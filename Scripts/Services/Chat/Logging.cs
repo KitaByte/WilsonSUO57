@@ -22,23 +22,17 @@ namespace Server.Engines.Chat
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            if (m_OutputPerChannel == null)
-            {
-                m_OutputPerChannel = new Dictionary<string, StreamWriter>();
-            }
+            m_OutputPerChannel = new Dictionary<string, StreamWriter>();
 
             try
             {
-                if (m_Output == null)
-                {
-                    m_Output = new StreamWriter(Path.Combine(directory, string.Format("{0}.log", DateTime.UtcNow.ToLongDateString())), true);
+                m_Output = new StreamWriter(Path.Combine(directory, string.Format("{0}.log", DateTime.UtcNow.ToLongDateString())), true);
 
-                    m_Output.AutoFlush = true;
+                m_Output.AutoFlush = true;
 
-                    m_Output.WriteLine("##############################");
-                    m_Output.WriteLine("Log started on {0}", DateTime.UtcNow);
-                    m_Output.WriteLine();
-                }
+                m_Output.WriteLine("##############################");
+                m_Output.WriteLine("Log started on {0}", DateTime.UtcNow);
+                m_Output.WriteLine();
             }
             catch
             {
@@ -57,11 +51,6 @@ namespace Server.Engines.Chat
 
             try
             {
-                if (m_Output == null)
-                {
-                    Initialize();
-                }
-
                 m_Output.WriteLine("{0}: [{1}] {2}", DateTime.UtcNow, channel, text);
 
                 StreamWriter channelOutput;

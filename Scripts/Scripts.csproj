@@ -516,6 +516,7 @@
     <Compile Include="Custom\UOBuilder\UOBuilderGump.cs" />
     <Compile Include="Custom\UOBuilder\UOBuilderPermit.cs" />
     <Compile Include="Custom\UOBuilder\UOBuilderStatic.cs" />
+    <Compile Include="Custom\UOHotBar\HotBarIcon.cs" />
     <Compile Include="Custom\UOStudio\Film\BodyDouble.cs" />
     <Compile Include="Custom\UOStudio\Film\FilmEntry.cs" />
     <Compile Include="Custom\UOStudio\Film\FilmFrame.cs" />
