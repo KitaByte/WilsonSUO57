@@ -76,6 +76,12 @@ namespace Server.Custom.UOStudio
 
         private Mobile User;
 
+        internal int _PropID = 42;
+
+        internal int _HueID = 0;
+
+        internal int _SoundID = -1;
+
         public StudioFilm(VideoRecorder recorder, Map map) : this()
         {
             var date = DateTime.Now;
@@ -194,7 +200,9 @@ namespace Server.Custom.UOStudio
             {
                 Frames.Add(new FilmFrame(actor, state, arg));
 
-                Frames.Last().Sounds.Add(-1);
+                Frames.Last().Sounds.Add(_SoundID);
+
+                _SoundID = -1;
 
                 BaseGump.SendGump(new StudioGump(actor as PlayerMobile, Recorder));
 
@@ -339,15 +347,18 @@ namespace Server.Custom.UOStudio
 
         internal void AddSound(int sound)
         {
-            Frames.Last().Sounds.Remove(Frames.Last().Sounds.Last());
+            if (Frames != null && Frames.Count > 0)
+            {
+                Frames.Last().Sounds.Remove(Frames.Last().Sounds.Last());
 
-            if (sound > -1 && sound < 0x683)
-            {
-                Frames.Last().Sounds.Add(sound);
-            }
-            else
-            {
-                Frames.Last().Sounds.Add(-1);
+                if (sound > -1 && sound < 0x683)
+                {
+                    Frames.Last().Sounds.Add(sound);
+                }
+                else
+                {
+                    Frames.Last().Sounds.Add(-1);
+                }
             }
         }
 

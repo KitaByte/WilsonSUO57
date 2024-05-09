@@ -1,4 +1,3 @@
-using Server.Gumps;
 using Server.Items;
 using Server.Spells;
 using Server.Spells.Necromancy;
@@ -9,9 +8,19 @@ namespace Server.Custom.UOHotBar
     {
         private Spell _Spell;
 
+        public HotBarIcon(Spell spell)
+        {
+            _Spell = spell;
+        }
+
         public void SetSpell(Spell spell)
         {
             _Spell = spell;
+        }
+
+        public Spell GetSpell()
+        {
+            return _Spell;
         }
 
         public SpellInfo GetInfo()
@@ -26,7 +35,14 @@ namespace Server.Custom.UOHotBar
 
         public int GetGumpIcon()
         {
-            return 0; // Get Spell Gump Art
+            if (_Spell != null)
+            {
+                return HotBarArt.GetSpellArt(_Spell);
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 
@@ -34,9 +50,9 @@ namespace Server.Custom.UOHotBar
     {
         public void something(Mobile from)
         {
-            var t = new HotBarIcon();
+            var t = new HotBarIcon(new CorpseSkinSpell(from, new CorpseSkinScroll()));
 
-            t.SetSpell(new CorpseSkinSpell(from, new CorpseSkinScroll()));
+            int art = t.GetGumpIcon();
         }
     }
 }

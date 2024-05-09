@@ -6,13 +6,11 @@ namespace Server.Custom.UOStudio
 {
     internal class StudioPropGump : BaseGump
     {
-        private int ID;
+        private readonly StudioFilm _Film;
 
-        private int HUE = 0;
-
-        public StudioPropGump(PlayerMobile user, int id = 42, int x = 0, int y = 0, BaseGump parent = null) : base(user, x, y, parent)
+        public StudioPropGump(PlayerMobile user, StudioFilm film, int x = 0, int y = 0, BaseGump parent = null) : base(user, x, y, parent)
         {
-            ID = id;
+            _Film = film;
         }
 
         public override void AddGumpLayout()
@@ -23,11 +21,11 @@ namespace Server.Custom.UOStudio
 
             AddBackground(X, Y, 100, 100, 40000);
 
-            AddTextEntry(X + 15, Y + 10, 60, 25, 53, 0, ID.ToString());
+            AddTextEntry(X + 15, Y + 10, 60, 25, 53, 0, _Film._PropID.ToString());
 
             AddLabel(X + 60, Y + 10, 1153, "ID");
 
-            AddTextEntry(X + 15, Y + 40, 60, 25, 53, 1, HUE.ToString());
+            AddTextEntry(X + 15, Y + 40, 60, 25, 53, 1, _Film._HueID.ToString());
 
             AddLabel(X + 60, Y + 40, 1153, "HUE");
 
@@ -37,7 +35,7 @@ namespace Server.Custom.UOStudio
 
             AddButton(X + 70, Y + 70, 2360, 2360, 3, GumpButtonType.Reply, 0);
 
-            AddItem(X + 10, Y + 100, ID, HUE);
+            AddItem(X + 10, Y + 100, _Film._PropID, _Film._HueID);
         }
 
         public override void OnResponse(RelayInfo info)
@@ -57,13 +55,13 @@ namespace Server.Custom.UOStudio
                         {
                             if (id > 0 && id < 44919)
                             {
-                                ID = id;
+                                _Film._PropID = id;
 
                                 User.SendMessage(53, $"Loaded ID : {id}");
 
                                 if (int.TryParse(info.GetTextEntry(1).Text, out int hue))
                                 {
-                                    HUE = hue;
+                                    _Film._HueID = hue;
 
                                     User.SendMessage(53, $"Loaded HUE : {hue}");
                                 }
@@ -77,9 +75,9 @@ namespace Server.Custom.UOStudio
 
                 case 2:
                     {
-                        User.SendMessage(53, $"Add : {ID} [ Hue = {HUE} ]");
+                        User.SendMessage(53, $"Add : {_Film._PropID} [ Hue = {_Film._HueID} ]");
 
-                        CommandSystem.Handle(User, $"{CommandSystem.Prefix}m Add StudioProp {ID} {HUE}");
+                        CommandSystem.Handle(User, $"{CommandSystem.Prefix}m Add StudioProp {_Film._PropID} {_Film._HueID}");
 
                         Refresh(true, false);
 

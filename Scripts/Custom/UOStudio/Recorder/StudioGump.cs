@@ -89,7 +89,7 @@ namespace Server.Custom.UOStudio
 
                 case 2:
                     {
-                        SendGump(new StudioPropGump(User, 42, X + 25, Y + 130, this));
+                        SendGump(new StudioPropGump(User, _Recorder.Film, X + 25, Y + 130, this));
 
                         Refresh(true, false);
 

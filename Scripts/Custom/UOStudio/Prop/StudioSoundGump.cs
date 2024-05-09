@@ -1,13 +1,12 @@
 using Server.Gumps;
 using Server.Mobiles;
+using System.Globalization;
 
 namespace Server.Custom.UOStudio
 {
     internal class StudioSoundGump : BaseGump
     {
-        private StudioFilm _Film;
-
-        private int ID = 0;
+        private readonly StudioFilm _Film;
 
         public StudioSoundGump(PlayerMobile user, StudioFilm film, int x = 0, int y = 0, BaseGump parent = null) : base(user, x, y, parent)
         {
@@ -22,7 +21,7 @@ namespace Server.Custom.UOStudio
 
             AddBackground(X, Y, 100, 70, 40000);
 
-            AddTextEntry(X + 15, Y + 10, 60, 25, 53, 0, ID.ToString());
+            AddTextEntry(X + 15, Y + 10, 60, 25, 53, 0, _Film._SoundID.ToString());
 
             AddLabel(X + 50, Y + 10, 1153, "SFX");
 
@@ -35,6 +34,8 @@ namespace Server.Custom.UOStudio
 
         public override void OnResponse(RelayInfo info)
         {
+            string inputText = info.GetTextEntry(0).Text;
+
             switch (info.ButtonID)
             {
                 case 0:
@@ -46,16 +47,13 @@ namespace Server.Custom.UOStudio
 
                 case 1:
                     {
-                        if (int.TryParse(info.GetTextEntry(0).Text, out int id))
+                        _Film._SoundID = GetSoundID(inputText);
+
+                        if (_Film._SoundID > -1)
                         {
-                            if (id > -1 && id < 0x683)
-                            {
-                                ID = id;
+                            User.SendMessage(_Film._SoundID, $"Preview SFX : {_Film._SoundID}");
 
-                                User.SendMessage(id, $"Preview SFX : {id}");
-
-                                User.PlaySound(id);
-                            }
+                            User.PlaySound(_Film._SoundID);
                         }
 
                         Refresh(true, false);
@@ -65,18 +63,15 @@ namespace Server.Custom.UOStudio
 
                 case 2:
                     {
-                        if (int.TryParse(info.GetTextEntry(0).Text, out int id))
+                        _Film._SoundID = GetSoundID(inputText);
+
+                        if (_Film._SoundID > -1)
                         {
-                            if (id > -1 && id < 0x683)
-                            {
-                                ID = id;
+                            User.SendMessage(_Film._SoundID, $"SFX - Recorded! : {_Film._SoundID}");
 
-                                User.SendMessage(id, $"SFX - Recorded! : {id}");
+                            User.PlaySound(_Film._SoundID);
 
-                                User.PlaySound(id);
-
-                                _Film.AddSound(ID);
-                            }
+                            _Film.AddSound(_Film._SoundID);
                         }
 
                         break;
@@ -91,6 +86,30 @@ namespace Server.Custom.UOStudio
                         break;
                     }
             }
+        }
+
+        private int GetSoundID(string inputText)
+        {
+            if (inputText.StartsWith("0x") && inputText.Length > 2)
+            {
+                if (int.TryParse(inputText.Substring(2), NumberStyles.HexNumber, null, out int id))
+                {
+                    if (id > -1 && id < 0x683)
+                    {
+                        return id;
+                    }
+                }
+            }
+
+            if (int.TryParse(inputText, out int intId))
+            {
+                if (intId > -1 && intId < 0x683)
+                {
+                    return intId;
+                }
+            }
+
+            return -1;
         }
     }
 }
