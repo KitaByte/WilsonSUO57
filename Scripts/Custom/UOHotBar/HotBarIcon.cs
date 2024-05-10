@@ -1,6 +1,4 @@
-using Server.Items;
 using Server.Spells;
-using Server.Spells.Necromancy;
 
 namespace Server.Custom.UOHotBar
 {
@@ -8,14 +6,30 @@ namespace Server.Custom.UOHotBar
     {
         private Spell _Spell;
 
+        private SpecialMove _Move;
+
         public HotBarIcon(Spell spell)
         {
             _Spell = spell;
         }
 
+        public HotBarIcon(SpecialMove move)
+        {
+            _Move = move;
+        }
+
         public void SetSpell(Spell spell)
         {
             _Spell = spell;
+
+            _Move = null;
+        }
+
+        public void SetMove(SpecialMove move)
+        {
+            _Move = move;
+
+            _Spell = null;
         }
 
         public Spell GetSpell()
@@ -23,17 +37,28 @@ namespace Server.Custom.UOHotBar
             return _Spell;
         }
 
-        public SpellInfo GetInfo()
+        public SpecialMove GetMove()
         {
-            return _Spell?.Info;
+            return _Move;
         }
 
-        public void CastSpell()
+        public void CastSpell(Mobile from)
         {
-            _Spell?.Cast();
+            if (_Spell != null)
+            {
+                _Spell.Cast();
+            }
         }
 
-        public int GetGumpIcon()
+        public void CastMove(Mobile from)
+        {
+            if (_Move != null)
+            {
+                SpecialMove.SetCurrentMove(from, _Move);
+            }
+        }
+
+        public int GetSpellIcon()
         {
             if (_Spell != null)
             {
@@ -44,15 +69,17 @@ namespace Server.Custom.UOHotBar
                 return 0;
             }
         }
-    }
 
-    public class test
-    {
-        public void something(Mobile from)
+        public int GetMoveIcon()
         {
-            var t = new HotBarIcon(new CorpseSkinSpell(from, new CorpseSkinScroll()));
-
-            int art = t.GetGumpIcon();
+            if (_Move != null)
+            {
+                return HotBarArt.GetMoveArt(_Move);
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

@@ -28,6 +28,8 @@ namespace Server.Custom.Misc
 
         private BaseAddon addonHandle;
 
+        public override bool Decays => false;
+
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseAddon AddonHandle
         {

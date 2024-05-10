@@ -81,7 +81,7 @@ namespace Server.Services.UOBattleCards.Items
 				if (MatchUtility.InMatch(from, true))
 					return;
 				
-				if (Owner == from)
+				if (Owner == from || from.AccessLevel != AccessLevel.Player)
 				{
 					from.SendMessage(52, "Deck Info");
 					from.SendMessage(42, $"{Items.Count - 1} Creature Cards");

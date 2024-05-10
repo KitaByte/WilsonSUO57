@@ -61,9 +61,16 @@ namespace Server.Services.UOBlackBox
         {
             var tempDict = new Dictionary<int, Bitmap>();
 
-            for (int i = 0; i < 65535; i++)
+            try
             {
-                tempDict.Add(i, Ultima.Gumps.GetGump(i));
+                for (int i = 0; i < 65535; i++)
+                {
+                    tempDict.Add(i, Ultima.Gumps.GetGump(i));
+                }
+            }
+            catch
+            {
+                BoxCore.LogConsole(System.ConsoleColor.Red, "UOBlackBox : Unable to load gump art : file busy!");
             }
 
             return tempDict;

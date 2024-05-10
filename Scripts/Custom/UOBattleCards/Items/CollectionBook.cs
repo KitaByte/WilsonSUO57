@@ -53,12 +53,15 @@ namespace Server.Services.UOBattleCards.Items
         {
 			Owner = CoreUtility.AntiTheftCheck(from, Owner, this);
 
-			if (Owner.HasGump(typeof(CollectionGump)))
+            if (from == Owner || from.AccessLevel != AccessLevel.Player)
             {
-                Owner.CloseGump(typeof(CollectionGump));
-
-                Gump = null;
+                if (from.HasGump(typeof(CollectionGump)))
+                {
+                    from.CloseGump(typeof(CollectionGump));
+                }
             }
+
+            Gump = null;
 
             return base.VerifyMove(from);   
         }

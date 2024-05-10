@@ -467,7 +467,10 @@ namespace Server.Custom.UOSurvivalEvent
                         }
                     }
 
-                    garbage[i].Delete();
+                    if (garbage[i] is Item)
+                    {
+                        garbage[i].Delete();
+                    }
                 }
             }
         }

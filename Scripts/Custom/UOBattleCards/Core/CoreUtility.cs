@@ -86,13 +86,13 @@ namespace Server.Services.UOBattleCards.Core
 				user.SendMessage(52, $"You are now marked as the owner of this {item.Name}");
 			}
 
-			if (user != owner)
+			if (user != owner && user.AccessLevel == AccessLevel.Player)
 			{
 				ReturnToOwner(user, item, owner);
 			}
 
-			return owner as PlayerMobile;
-		}
+            return owner as PlayerMobile;
+        }
 
 		private static void ReturnToOwner(Mobile player, Item item, Mobile owner)
 		{

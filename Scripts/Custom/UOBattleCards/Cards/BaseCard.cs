@@ -80,7 +80,7 @@ namespace Server.Services.UOBattleCards.Cards
             if (MatchUtility.InMatch(from, true))
                 return;
 
-            if (Info.Owner == from)
+            if (Info.Owner == from || from.AccessLevel != AccessLevel.Player)
             {
                 BaseGump.SendGump(Info.GetCardGump());
 

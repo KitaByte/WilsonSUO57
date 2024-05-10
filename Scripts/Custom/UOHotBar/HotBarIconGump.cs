@@ -1,27 +1,51 @@
 using Server.Gumps;
-using Server.Items;
 using Server.Mobiles;
-using Server.Spells.Eighth;
 
 namespace Server.Custom.UOHotBar
 {
     internal class HotBarIconGump : BaseGump
     {
-        public HotBarIconGump(PlayerMobile user) : base(user, 50, 50, null)
+        private HotBarIcon _Icon;
+
+        public HotBarIconGump(PlayerMobile user, HotBarIcon icon) : base(user, 50, 50, null)
         {
+            _Icon = icon;
         }
 
         public override void AddGumpLayout()
         {
-            Closable = true;
+            Closable = false;
             Resizable = false;
             Dragable = true;
 
-            HotBarIcon icon = new HotBarIcon(new ResurrectionSpell(User, new ResurrectionScroll()));
+            int id;
 
-            int id = HotBarArt.GetSpellArt(icon.GetSpell());
+            if (_Icon.GetSpell() != null)
+            {
+                id = _Icon.GetSpellIcon();
+            }
+            else
+            {
+                id = _Icon.GetMoveIcon();
+            }
 
-            AddBackground(X, Y, 44, 44, id);
+            AddBackground(X, Y, 64, 64, 83);
+
+            AddButton(X + 10, Y + 10, id, id, 1, GumpButtonType.Reply, 0);
+        }
+
+        public override void OnResponse(RelayInfo info)
+        {
+            if (_Icon.GetSpell() != null)
+            {
+                _Icon.CastSpell(User);
+            }
+            else
+            {
+                _Icon.CastMove(User);
+            }
+
+            Close();
         }
     }
 }

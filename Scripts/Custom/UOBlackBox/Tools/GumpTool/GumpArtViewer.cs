@@ -58,6 +58,8 @@ namespace Server.Services.UOBlackBox.Tools
             var wOffset = (width - 50 - iWidth) / 2;
             var hOffset = (height - 75 - iHeight) / 2;
 
+            width += 40; // For ID TextEntry!
+
             AddBackground(X, Y, width, height, GumpCore.MainBG);
 
             // Info
@@ -71,6 +73,9 @@ namespace Server.Services.UOBlackBox.Tools
 
             // 16x16 Next
             AddButton(X + GumpCore.GetCentered(width, title, false) + 25, Y + 21, GumpCore.NextBtnUP, GumpCore.NextBtnDown, 2, GumpButtonType.Reply, 0);
+
+            // JumpTo #
+            AddTextEntry(X + GumpCore.GetCentered(width, title, false) + 45, Y + 21, 35, 16, GumpCore.WhtText, 0, GumpId.ToString());
 
             // Gump
             if (iWidth == 0 && iHeight == 0)
@@ -91,6 +96,16 @@ namespace Server.Services.UOBlackBox.Tools
 
         public override void OnResponse(RelayInfo info)
         {
+            int GoodID = 0;
+
+            if (int.TryParse(info.TextEntries[0].Text, out int id))
+            {
+                if (id > 0 && id < 65534)
+                {
+                    GoodID = id;
+                }
+            }
+
             if (info.ButtonID > 0)
             {
                 switch (info.ButtonID)
@@ -112,7 +127,14 @@ namespace Server.Services.UOBlackBox.Tools
                         {
                             if (GumpId < 65534)
                             {
-                                SendGump(new GumpArtViewer(Session, GumpId + 1));
+                                if (GoodID != 0 && GoodID != GumpId)
+                                {
+                                    SendGump(new GumpArtViewer(Session, GoodID));
+                                }
+                                else
+                                {
+                                    SendGump(new GumpArtViewer(Session, GumpId + 1));
+                                }
                             }
                             else
                             {
