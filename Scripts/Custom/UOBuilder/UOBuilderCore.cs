@@ -148,17 +148,20 @@ namespace Server.Custom.UOBuilder
 
                 foreach (var entity in UOBuildsList[serial])
                 {
-                    UOBuilderStatic uobs = new UOBuilderStatic();
+                    if (!entity.IsPlaced())
+                    {
+                        UOBuilderStatic uobs = new UOBuilderStatic();
 
-                    uobs.AddStaff(staff);
+                        uobs.AddStaff(staff);
 
-                    uobs.UpdateStats(entity);
+                        uobs.UpdateStats(entity);
+                    }
 
                     if (!isMoved)
                     {
                         isMoved = true;
 
-                        staff.MoveToWorld(uobs.Location, uobs.Map);
+                        staff.MoveToWorld(new Point3D(entity.E_X, entity.E_Y, entity.E_Z), Map.Parse(entity.E_Map));
                     }
                 }
             }

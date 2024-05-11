@@ -51,6 +51,11 @@ namespace Server.Custom.UOStudio
                 }
                 else
                 {
+                    if (from.HasGump(typeof(StudioGump)))
+                    {
+                        from.CloseGump(typeof(StudioGump));
+                    }
+
                     BaseGump.SendGump(new StudioGump(from as PlayerMobile, this));
                 }
             }
@@ -186,6 +191,11 @@ namespace Server.Custom.UOStudio
                         if (!StudioEngine.Actors.ContainsKey(pm))
                         {
                             StudioEngine.AddActor(pm, _Film);
+                        }
+
+                        if (pm.HasGump(typeof(StudioGump)))
+                        {
+                            pm.CloseGump(typeof(StudioGump));
                         }
 
                         BaseGump.SendGump(new StudioGump(pm, _Recorder));

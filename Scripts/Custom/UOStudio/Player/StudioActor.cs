@@ -11,6 +11,8 @@ namespace Server.Custom.UOStudio
 
         public StudioActor(BodyDouble info) : base(AIType.AI_Use_Default, FightMode.None, 0, 0, 0.0, 0.0)
         {
+            AccessLevel = AccessLevel.Counselor;
+
             InitStats(31, 41, 51);
 
             SpeechHue = Utility.RandomDyedHue();

@@ -58,7 +58,9 @@ namespace Server.Custom.UOStudio
                                     {
                                         Point3D loc = frame.GetNextLocation();
 
-                                        actor.Move(actor.GetDirectionTo(loc));
+                                        actor.Direction = actor.GetDirectionTo(loc);
+
+                                        actor.Move(actor.Direction);
 
                                         if (actor.Location != loc)
                                         {
@@ -180,6 +182,8 @@ namespace Server.Custom.UOStudio
 
         private static void RemoveActor(Mobile oldActor, StudioFilm film)
         {
+            oldActor.Hidden = true;
+
             if (film.FilmAnim)
             {
                 StudioEngine.PlayStudioEffects(oldActor.Location, oldActor.Map);
@@ -198,7 +202,10 @@ namespace Server.Custom.UOStudio
                 StudioEngine.PlayStudioEffects(frame.Location, _Film.StageMap);
             }
 
-            actor = new StudioActor(frame.FrameDouble);
+            actor = new StudioActor(frame.FrameDouble)
+            {
+                Hidden = true
+            };
 
             actor.MoveToWorld(frame.Location, _Film.StageMap);
 
@@ -212,6 +219,8 @@ namespace Server.Custom.UOStudio
             actor.BodyMod = frame.GetBody();
 
             actor.HueMod = frame.GetHue();
+
+            actor.Hidden = _Film.HideActor;
         }
     }
 }

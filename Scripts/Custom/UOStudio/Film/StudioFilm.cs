@@ -25,7 +25,7 @@ namespace Server.Custom.UOStudio
         public string FilmName { get { return Name; } set { Name = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string LinkedFilm { get; set; }
+        public string LinkedFilm { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsLinkConcurrent { get; set; }
@@ -47,6 +47,9 @@ namespace Server.Custom.UOStudio
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool UseFilmProps { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool HideActor { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool InDebug { get { return StudioEngine.IsDebug; } set { StudioEngine.IsDebug = value; } }
@@ -114,6 +117,8 @@ namespace Server.Custom.UOStudio
 
             UseFilmProps = false;
 
+            HideActor = false;
+
             InDebug = false;
         }
 
@@ -135,6 +140,18 @@ namespace Server.Custom.UOStudio
             if (from.AccessLevel >= AccessLevel.GameMaster)
             {
                 list.Add(new FilmEntry());
+            }
+        }
+
+        public void LinkFilm(string film)
+        {
+            if (string.IsNullOrEmpty(film))
+            {
+                LinkedFilm = null;
+            }
+            else
+            {
+                LinkedFilm = film;
             }
         }
 
@@ -203,6 +220,11 @@ namespace Server.Custom.UOStudio
                 Frames.Last().Sounds.Add(_SoundID);
 
                 _SoundID = -1;
+
+                if (actor.HasGump(typeof(StudioGump)))
+                {
+                    actor.CloseGump(typeof(StudioGump));
+                }
 
                 BaseGump.SendGump(new StudioGump(actor as PlayerMobile, Recorder));
 
@@ -477,6 +499,8 @@ namespace Server.Custom.UOStudio
             }
 
             writer.WriteItemList(StageProps);
+
+            writer.Write(HideActor);
         }
 
         public void Export(StreamWriter writer)
@@ -522,6 +546,8 @@ namespace Server.Custom.UOStudio
                     }
                 }
             }
+
+            writer.WriteLine(HideActor);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -530,10 +556,7 @@ namespace Server.Custom.UOStudio
 
             LinkedFilm = reader.ReadString();
 
-            if (StudioEngine.HasData(out int version) && version > 8)
-            {
-                IsLinkConcurrent = reader.ReadBool();
-            }
+            IsLinkConcurrent = reader.ReadBool();
 
             PlayOnMovement = reader.ReadBool();
 
@@ -569,16 +592,18 @@ namespace Server.Custom.UOStudio
             StageProps = new ArrayList();
 
             StageProps = reader.ReadItemList();
+
+            if (StudioEngine.HasData(out int version) && version > 10)
+            {
+                HideActor = reader.ReadBool();
+            }
         }
 
         public void Import(StreamReader reader)
         {
             LinkedFilm = reader.ReadLine();
 
-            if (StudioEngine.HasData(out int version) && version > 8)
-            {
-                IsLinkConcurrent = bool.Parse(reader.ReadLine());
-            }
+            IsLinkConcurrent = bool.Parse(reader.ReadLine());
 
             PlayOnMovement = bool.Parse(reader.ReadLine());
 
@@ -618,6 +643,11 @@ namespace Server.Custom.UOStudio
                 prop.Import(reader);
 
                 StageProps.Add(prop);
+            }
+
+            if (StudioEngine.HasData(out int version) && version > 10)
+            {
+                HideActor = bool.Parse(reader.ReadLine());
             }
         }
     }

@@ -17,7 +17,7 @@ namespace Server.Custom.UOStudio
 
     public static class StudioEngine
     {
-        internal const string Version = "UO_Studio_2024,Version_1.0.0.9";
+        internal const string Version = "UO_Studio_2024,Version_1.0.0.11";
 
         internal static bool IsDebug { get; set; }
 

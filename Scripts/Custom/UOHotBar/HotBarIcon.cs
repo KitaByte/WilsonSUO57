@@ -81,5 +81,17 @@ namespace Server.Custom.UOHotBar
                 return 0;
             }
         }
+
+        internal void SendDebugMessage(Mobile from)
+        {
+            if (_Spell != null)
+            {
+                from.SendMessage(53, $"Testing - {_Spell.GetType().Name}");
+            }
+            else if(_Move != null)
+            {
+                from.SendMessage(53, $"Testing - {_Move.GetType().Name}");
+            }
+        }
     }
 }

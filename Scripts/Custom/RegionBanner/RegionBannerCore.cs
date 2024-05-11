@@ -19,28 +19,12 @@ namespace Server.Custom.RegionBanner
 
                 if (e.OldRegion.Name != null)
                 {
-                    if (!e.OldRegion.IsPartOf(typeof(DungeonRegion)) && e.OldRegion.Name.Contains("Cave"))
-                    {
-                        isGood = false;
-                    }
+                    isGood = ValidateRegion(e.OldRegion, isGood);
+                }
 
-                    if (isGood && e.OldRegion.IsPartOf(typeof(HouseRegion)))
-                    {
-                        isGood = false;
-                    }
-
-                    if (isGood && e.NewRegion.Name != null)
-                    {
-                        if (!e.NewRegion.IsPartOf(typeof(DungeonRegion)) && e.NewRegion.Name.Contains("Cave"))
-                        {
-                            isGood = false;
-                        }
-
-                        if (isGood && e.NewRegion.IsPartOf(typeof(HouseRegion)))
-                        {
-                            isGood = false;
-                        }
-                    }
+                if (isGood && e.NewRegion.Name != null)
+                {
+                    isGood = ValidateRegion(e.NewRegion, isGood);
                 }
 
                 if (isGood)
@@ -53,6 +37,21 @@ namespace Server.Custom.RegionBanner
                     BaseGump.SendGump(new RegionBannerGump(pm, e.NewRegion.Name));
                 }
             }
+        }
+
+        private static bool ValidateRegion(Region region, bool isGood)
+        {
+            if (!region.IsPartOf(typeof(DungeonRegion)) && region.Name.Contains("Cave"))
+            {
+                isGood = false;
+            }
+
+            if (isGood && region.IsPartOf(typeof(HouseRegion)))
+            {
+                isGood = false;
+            }
+
+            return isGood;
         }
     }
 }

@@ -4,6 +4,7 @@ using Server.Gumps;
 using Server.Spells;
 using Server.Spells.Ninjitsu;
 using Server.Items;
+using Server.Spells.First;
 
 namespace Server.Custom.UOHotBar
 {
@@ -19,24 +20,27 @@ namespace Server.Custom.UOHotBar
         [Description("Hot Bar - Test Spell")]
         private static void TestSpell_OnCommand(CommandEventArgs e)
         {
-            SpellScroll scroll = new CreateFoodScroll();
+            HotBarIcon icon = new HotBarIcon(SpellRegistry.NewSpell(new AnimalForm(e.Mobile, null).ID, e.Mobile, null));
 
-            Spell spell = SpellRegistry.NewSpell(scroll.SpellID, e.Mobile, null);
+            BaseGump.SendGump(new HotBarIconGump(e.Mobile as PlayerMobile, icon));
 
-            BaseGump.SendGump(new HotBarIconGump(e.Mobile as PlayerMobile, new HotBarIcon(spell)));
-
-            e.Mobile.SendMessage(53, "Testing Spell!");
+            SendIconMessage(e.Mobile, icon);
         }
 
         [Usage("TestMove")]
         [Description("Hot Bar - Test Move")]
         private static void TestMove_OnCommand(CommandEventArgs e)
         {
-            SpecialMove move = new DeathStrike();
+            HotBarIcon icon = new HotBarIcon(new DeathStrike());
 
-            BaseGump.SendGump(new HotBarIconGump(e.Mobile as PlayerMobile, new HotBarIcon(move)));
+            BaseGump.SendGump(new HotBarIconGump(e.Mobile as PlayerMobile, icon));
 
-            e.Mobile.SendMessage(53, "Testing Move!");
+            SendIconMessage(e.Mobile, icon);
+        }
+
+        private static void SendIconMessage(Mobile from, HotBarIcon icon)
+        {
+            icon.SendDebugMessage(from);
         }
     }
 }

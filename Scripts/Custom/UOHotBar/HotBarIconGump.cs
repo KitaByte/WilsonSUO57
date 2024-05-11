@@ -14,7 +14,7 @@ namespace Server.Custom.UOHotBar
 
         public override void AddGumpLayout()
         {
-            Closable = false;
+            Closable = true;
             Resizable = false;
             Dragable = true;
 
@@ -36,13 +36,16 @@ namespace Server.Custom.UOHotBar
 
         public override void OnResponse(RelayInfo info)
         {
-            if (_Icon.GetSpell() != null)
+            if (info.ButtonID > 0)
             {
-                _Icon.CastSpell(User);
-            }
-            else
-            {
-                _Icon.CastMove(User);
+                if (_Icon.GetSpell() != null)
+                {
+                    _Icon.CastSpell(User);
+                }
+                else
+                {
+                    _Icon.CastMove(User);
+                }
             }
 
             Close();

@@ -48,6 +48,13 @@ namespace Server.Custom.UOStudio
 
         public override void OnResponse(RelayInfo info)
         {
+            if (User == null || _Recorder == null)
+            {
+                Close();
+
+                return;
+            }
+
             switch (info.ButtonID)
             {
                 case 0:
@@ -69,7 +76,7 @@ namespace Server.Custom.UOStudio
                         {
                             User.SendMessage(63, "Started Recording!");
 
-                            _Recorder.Film.AddFrame(User, FilmState.Move, $"{User.X + offset.X}:{User.Y + offset.Y}:{User.Z}");
+                            _Recorder.Film?.AddFrame(User, FilmState.Move, $"{User.X + offset.X}:{User.Y + offset.Y}:{User.Z}");
 
                             Refresh(true, false);
                         }
@@ -77,7 +84,7 @@ namespace Server.Custom.UOStudio
                         {
                             User.SendMessage(43, "Stopped Recording!");
 
-                            _Recorder.Film.AddFrame(User, FilmState.Move, $"{User.X + offset.X}:{User.Y + offset.Y}:{User.Z}");
+                            _Recorder.Film?.AddFrame(User, FilmState.Move, $"{User.X + offset.X}:{User.Y + offset.Y}:{User.Z}");
 
                             _Recorder.Reset(User);
 

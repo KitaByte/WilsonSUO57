@@ -33,13 +33,15 @@ namespace Server.Custom.UOStudio
             {
                 if (targeted is StudioFilm film)
                 {
-                    Film.LinkedFilm = film.Name;
+                    Film.LinkFilm(film.Name);
 
                     from.SendMessage(43, $"You linked to {film.Name}");
                 }
                 else
                 {
-                    from.SendMessage(43, "That is not film!");
+                    Film.LinkFilm(null);
+
+                    from.SendMessage(43, "Linked Cleared!");
                 }
             }
         }
