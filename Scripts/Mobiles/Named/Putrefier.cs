@@ -64,8 +64,8 @@ namespace Server.Mobiles
             if ( Utility.RandomDouble() < 0.6 )
             c.DropItem( new ParrotItem() );
 
-            if ( Paragon.ChestChance > Utility.RandomDouble() )
-            c.DropItem( new ParagonChest( Name, 5 ) );
+            if (Paragon.ChestChance > Utility.RandomDouble())
+                c.DropItem(new ParagonChest(Name, 5));
         }
 
         public override bool GivesMLMinorArtifact

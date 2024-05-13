@@ -24,11 +24,16 @@ namespace Server.Custom.UOStudio
         [CommandProperty(AccessLevel.GameMaster)]
         public string FilmName { get { return Name; } set { Name = value; } }
 
+        // Start Linked Film Props
+        public string LinkedFilm { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public string LinkedFilm { get; private set; }
+        public bool IsLinked { get { return LinkedFilm != null; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsLinkConcurrent { get; set; }
+
+        // End Linked Film Props
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool PlayOnMovement { get; set; }
@@ -217,10 +222,6 @@ namespace Server.Custom.UOStudio
             {
                 Frames.Add(new FilmFrame(actor, state, arg));
 
-                Frames.Last().Sounds.Add(_SoundID);
-
-                _SoundID = -1;
-
                 if (actor.HasGump(typeof(StudioGump)))
                 {
                     actor.CloseGump(typeof(StudioGump));
@@ -371,15 +372,13 @@ namespace Server.Custom.UOStudio
         {
             if (Frames != null && Frames.Count > 0)
             {
-                Frames.Last().Sounds.Remove(Frames.Last().Sounds.Last());
-
                 if (sound > -1 && sound < 0x683)
                 {
-                    Frames.Last().Sounds.Add(sound);
+                    Frames.Last().SoundID = sound;
                 }
                 else
                 {
-                    Frames.Last().Sounds.Add(-1);
+                    Frames.Last().SoundID = -1;
                 }
             }
         }
@@ -461,13 +460,25 @@ namespace Server.Custom.UOStudio
             }
         }
 
+        internal void AddEffect(SETypes type, Point3D location)
+        {
+            if (Frames != null && Frames.Count > 0)
+            {
+                Frames.Last().Effect_Info = new EffectInfo(type, location);
+            }
+        }
+
         public StudioFilm(Serial serial) : base(serial)
         {
         }
 
+        private const int SerialVersion = 1;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
+            writer.Write(SerialVersion); // verion
 
             writer.Write(LinkedFilm);
 
@@ -505,9 +516,11 @@ namespace Server.Custom.UOStudio
 
         public void Export(StreamWriter writer)
         {
+            writer.WriteLine(SerialVersion); // version
+
             writer.WriteLine(LinkedFilm);
 
-            writer.Write(IsLinkConcurrent);
+            writer.WriteLine(IsLinkConcurrent);
 
             writer.WriteLine(PlayOnMovement);
 
@@ -554,99 +567,103 @@ namespace Server.Custom.UOStudio
         {
             base.Deserialize(reader);
 
-            LinkedFilm = reader.ReadString();
+            int version = reader.ReadInt();
 
-            IsLinkConcurrent = reader.ReadBool();
-
-            PlayOnMovement = reader.ReadBool();
-
-            OnMovementRange = reader.ReadInt();
-
-            FilmSpeed = reader.ReadInt();
-
-            FilmDelay = reader.ReadInt();
-
-            FilmAnim = reader.ReadBool();
-
-            UseFilmProps = reader.ReadBool();
-
-            StageMap = reader.ReadMap();
-
-            StageStart = reader.ReadPoint2D();
-
-            StageEnd = reader.ReadPoint2D();
-
-            int count = reader.ReadInt();
-
-            Frames = new List<FilmFrame>();
-
-            for (int i = 0; i < count; i++)
+            if (version > -1)
             {
-                var frame = new FilmFrame();
+                LinkedFilm = reader.ReadString();
 
-                frame.Load(reader);
+                IsLinkConcurrent = reader.ReadBool();
 
-                Frames.Add(frame);
-            }
+                PlayOnMovement = reader.ReadBool();
 
-            StageProps = new ArrayList();
+                OnMovementRange = reader.ReadInt();
 
-            StageProps = reader.ReadItemList();
+                FilmSpeed = reader.ReadInt();
 
-            if (StudioEngine.HasData(out int version) && version > 10)
-            {
+                FilmDelay = reader.ReadInt();
+
+                FilmAnim = reader.ReadBool();
+
+                UseFilmProps = reader.ReadBool();
+
+                StageMap = reader.ReadMap();
+
+                StageStart = reader.ReadPoint2D();
+
+                StageEnd = reader.ReadPoint2D();
+
+                int count = reader.ReadInt();
+
+                Frames = new List<FilmFrame>();
+
+                for (int i = 0; i < count; i++)
+                {
+                    var frame = new FilmFrame();
+
+                    frame.Load(reader, version);
+
+                    Frames.Add(frame);
+                }
+
+                StageProps = new ArrayList();
+
+                StageProps = reader.ReadItemList();
+
                 HideActor = reader.ReadBool();
             }
         }
 
         public void Import(StreamReader reader)
         {
-            LinkedFilm = reader.ReadLine();
+            int version = int.Parse(reader.ReadLine());
 
-            IsLinkConcurrent = bool.Parse(reader.ReadLine());
-
-            PlayOnMovement = bool.Parse(reader.ReadLine());
-
-            OnMovementRange = int.Parse(reader.ReadLine());
-
-            FilmSpeed = int.Parse(reader.ReadLine());
-
-            FilmDelay = int.Parse(reader.ReadLine());
-
-            FilmAnim = bool.Parse(reader.ReadLine());
-
-            UseFilmProps = bool.Parse(reader.ReadLine());
-
-            StageMap = Map.Parse(reader.ReadLine());
-
-            StageStart = Point2D.Parse(reader.ReadLine());
-
-            StageEnd = Point2D.Parse(reader.ReadLine());
-
-            var frameCount = int.Parse(reader.ReadLine());
-
-            for (int i = 0; i < frameCount; i++)
+            if (version > -1)
             {
-                var frame = new FilmFrame();
+                LinkedFilm = reader.ReadLine();
 
-                frame.Import(reader);
+                IsLinkConcurrent = bool.Parse(reader.ReadLine());
 
-                Frames.Add(frame);
-            }
+                PlayOnMovement = bool.Parse(reader.ReadLine());
 
-            var countStageProps = int.Parse(reader.ReadLine());
+                OnMovementRange = int.Parse(reader.ReadLine());
 
-            for (int i = 0; i < countStageProps; i++)
-            {
-                StudioProp prop = new StudioProp();
+                FilmSpeed = int.Parse(reader.ReadLine());
 
-                prop.Import(reader);
+                FilmDelay = int.Parse(reader.ReadLine());
 
-                StageProps.Add(prop);
-            }
+                FilmAnim = bool.Parse(reader.ReadLine());
 
-            if (StudioEngine.HasData(out int version) && version > 10)
-            {
+                UseFilmProps = bool.Parse(reader.ReadLine());
+
+                StageMap = Map.Parse(reader.ReadLine());
+
+                StageStart = Point2D.Parse(reader.ReadLine());
+
+                StageEnd = Point2D.Parse(reader.ReadLine());
+
+                var frameCount = int.Parse(reader.ReadLine());
+
+                for (int i = 0; i < frameCount; i++)
+                {
+                    var frame = new FilmFrame();
+
+                    frame.Import(reader, version);
+
+                    Frames.Add(frame);
+                }
+
+                var countStageProps = int.Parse(reader.ReadLine());
+
+                for (int i = 0; i < countStageProps; i++)
+                {
+                    StudioProp prop = new StudioProp();
+
+                    prop.Import(reader);
+
+                    StageProps.Add(prop);
+                }
+
                 HideActor = bool.Parse(reader.ReadLine());
             }
         }

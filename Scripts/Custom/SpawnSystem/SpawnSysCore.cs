@@ -89,7 +89,7 @@ namespace Server.Custom.SpawnSystem
 
         public static void Initialize()
         {
-            SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkYellow, $"UORespawn: Startup Time => {DateTime.Now.ToShortTimeString()}");
+            SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkYellow, $"Startup Time => {DateTime.Now.ToShortTimeString()}");
 
             LoadLogo();
 
@@ -101,7 +101,7 @@ namespace Server.Custom.SpawnSystem
 
             StartTimer();
 
-            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Green, $"UORespawn: Ready to Spawn...");
+            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Green, $"Ready to Spawn...");
         }
 
         private static void LoadLogo()
@@ -122,7 +122,7 @@ namespace Server.Custom.SpawnSystem
 
             _CleanUpList = new List<Mobile>();
 
-            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "UORespawn: Lists Initialized...}");
+            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Lists Initialized...}");
         }
 
         private static void SubscribeEvents()
@@ -147,7 +147,7 @@ namespace Server.Custom.SpawnSystem
 
             EventSink.Crashed += EventSink_Crashed;
 
-            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "UORespawn: Events Subscribed...}");
+            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Events Attached...}");
         }
 
         private static void StartTimer()
@@ -156,7 +156,7 @@ namespace Server.Custom.SpawnSystem
 
             _SpawnTimer.Start();
 
-            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "UORespawn: Timer Started...}");
+            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Timer Started...}");
         }
 
         private static void EventSink_ServerStarted()
@@ -180,7 +180,7 @@ namespace Server.Custom.SpawnSystem
 
             if (cleaned > 0)
             {
-                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkYellow, $"UORespawn: Cleaned {cleaned} mobiles!");
+                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkYellow, $"Cleaned {cleaned} Spawn!");
             }
         }
 
@@ -236,7 +236,7 @@ namespace Server.Custom.SpawnSystem
             }
             catch(Exception ex)
             {
-                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"UORspawn: Stat File Error - {ex.Message}");
+                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"Stat File Error - {ex.Message}");
             }
         }
 
@@ -381,7 +381,7 @@ namespace Server.Custom.SpawnSystem
             }
             catch (Exception ex)
             {
-                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"UORespawn - Update Error: {ex.Message}");
+                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"Update Player Spawn Error: {ex.Message}");
             }
         }
 

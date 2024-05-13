@@ -1,5 +1,6 @@
 using Server.Gumps;
 using Server.Mobiles;
+using Server.Multis;
 using Server.Regions;
 
 namespace Server.Custom.RegionBanner
@@ -13,16 +14,16 @@ namespace Server.Custom.RegionBanner
 
         private static void EventSink_OnEnterRegion(OnEnterRegionEventArgs e)
         {
-            if (e.From is PlayerMobile pm && pm.Map != Map.Internal && !RegionBannerCommand.IsExcludedPlayer(pm))
+            if (e.From is PlayerMobile pm && !RegionBannerCommand.IsExcludedPlayer(pm))
             {
                 bool isGood = true;
 
-                if (e.OldRegion.Name != null)
+                if (e.OldRegion != null)
                 {
                     isGood = ValidateRegion(e.OldRegion, isGood);
                 }
 
-                if (isGood && e.NewRegion.Name != null)
+                if (isGood && e.NewRegion != null)
                 {
                     isGood = ValidateRegion(e.NewRegion, isGood);
                 }
@@ -41,14 +42,14 @@ namespace Server.Custom.RegionBanner
 
         private static bool ValidateRegion(Region region, bool isGood)
         {
-            if (!region.IsPartOf(typeof(DungeonRegion)) && region.Name.Contains("Cave"))
+            if (!region.IsPartOf(typeof(DungeonRegion)) && region.Name != null && region.Name.Contains("Cave"))
             {
-                isGood = false;
+                return false;
             }
 
-            if (isGood && region.IsPartOf(typeof(HouseRegion)))
+            if (region is HouseRegion || region is NoHousingRegion || region is TempNoHousingRegion)
             {
-                isGood = false;
+                return false;
             }
 
             return isGood;

@@ -116,12 +116,12 @@ namespace Server
 				Item item = entry.Construct(from, luckChance, spawning);
 
 				if (item != null)
-				{
-					if (!item.Stackable || !cont.TryDropItem(from, item, false))
-					{
-						cont.DropItem(item);
-					}
-				}
+                {
+                    if (!item.Stackable || !cont.TryDropItem(from, item, false))
+                    {
+                        cont.DropItem(item);
+                    }
+                }
 			}
 		}
 

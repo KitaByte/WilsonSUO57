@@ -173,76 +173,82 @@ namespace Server.Custom.UOStudio
             }
         }
 
-        internal void Load(GenericReader reader)
+        internal void Load(GenericReader reader, int version)
         {
-            IsFemale = reader.ReadBool();
-
-            ActorName = reader.ReadString();
-
-            BodyID = reader.ReadInt();
-
-            BodyIDMod = reader.ReadInt();
-
-            SkinHue = reader.ReadInt();
-
-            HairColor = reader.ReadInt();
-
-            HairStyle = reader.ReadInt();
-
-            if (!IsFemale)
+            if (version > -1)
             {
-                FaceHairColor = reader.ReadInt();
+                IsFemale = reader.ReadBool();
 
-                FaceHairStyle = reader.ReadInt();
-            }
+                ActorName = reader.ReadString();
 
-            Clothing = new ArrayList();
+                BodyID = reader.ReadInt();
 
-            ClothingHue = new ArrayList();
+                BodyIDMod = reader.ReadInt();
 
-            int count = reader.ReadInt();
+                SkinHue = reader.ReadInt();
 
-            for (int i = 0; i < count; i++)
-            {
-                Clothing.Add(reader.ReadString());
-            }
+                HairColor = reader.ReadInt();
 
-            for (int i = 0; i < count; i++)
-            {
-                ClothingHue.Add(reader.ReadInt());
+                HairStyle = reader.ReadInt();
+
+                if (!IsFemale)
+                {
+                    FaceHairColor = reader.ReadInt();
+
+                    FaceHairStyle = reader.ReadInt();
+                }
+
+                Clothing = new ArrayList();
+
+                ClothingHue = new ArrayList();
+
+                int count = reader.ReadInt();
+
+                for (int i = 0; i < count; i++)
+                {
+                    Clothing.Add(reader.ReadString());
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    ClothingHue.Add(reader.ReadInt());
+                }
             }
         }
 
-        internal void Import(StreamReader reader)
+        internal void Import(StreamReader reader, int version)
         {
-            IsFemale = bool.Parse(reader.ReadLine());
-
-            ActorName = reader.ReadLine();
-
-            BodyID = int.Parse(reader.ReadLine());
-
-            BodyIDMod = int.Parse(reader.ReadLine());
-
-            SkinHue = int.Parse(reader.ReadLine());
-
-            HairColor = int.Parse(reader.ReadLine());
-
-            HairStyle = int.Parse(reader.ReadLine());
-
-            if (!IsFemale)
+            if (version > -1)
             {
-                FaceHairColor = int.Parse(reader.ReadLine());
+                IsFemale = bool.Parse(reader.ReadLine());
 
-                FaceHairStyle = int.Parse(reader.ReadLine());
-            }
+                ActorName = reader.ReadLine();
 
-            var countClothing = int.Parse(reader.ReadLine());
+                BodyID = int.Parse(reader.ReadLine());
 
-            for (int j = 0; j < countClothing; j++)
-            {
-                Clothing.Add(reader.ReadLine());
+                BodyIDMod = int.Parse(reader.ReadLine());
 
-                ClothingHue.Add(int.Parse(reader.ReadLine()));
+                SkinHue = int.Parse(reader.ReadLine());
+
+                HairColor = int.Parse(reader.ReadLine());
+
+                HairStyle = int.Parse(reader.ReadLine());
+
+                if (!IsFemale)
+                {
+                    FaceHairColor = int.Parse(reader.ReadLine());
+
+                    FaceHairStyle = int.Parse(reader.ReadLine());
+                }
+
+                var countClothing = int.Parse(reader.ReadLine());
+
+                for (int j = 0; j < countClothing; j++)
+                {
+                    Clothing.Add(reader.ReadLine());
+
+                    ClothingHue.Add(int.Parse(reader.ReadLine()));
+                }
             }
         }
     }

@@ -35,6 +35,8 @@ namespace Server.Custom.UOStudio
                 {
                     PlayStudioSound(frame);
 
+                    PlayStudioEffect(frame, _Film.StageMap);
+
                     if (_FrameCounter == 0)
                     {
                         CreateActor(frame);
@@ -139,9 +141,17 @@ namespace Server.Custom.UOStudio
 
         private void PlayStudioSound(FilmFrame frame)
         {
-            if (frame.Sounds != null && frame.Sounds.Count > _FrameCounter && frame.Sounds[_FrameCounter] != -1)
+            if (frame.SoundID != -1)
             {
-                Effects.PlaySound(frame.Location, _Film.StageMap, frame.Sounds[_FrameCounter]);
+                Effects.PlaySound(frame.Location, _Film.StageMap, frame.SoundID);
+            }
+        }
+
+        private void PlayStudioEffect(FilmFrame frame, Map map)
+        {
+            if (frame.Effect_Info != null && frame.Effect_Info.SE_Effect != SETypes.None)
+            {
+                StudioEffects.PlayEffect(frame.Effect_Info, map);
             }
         }
 

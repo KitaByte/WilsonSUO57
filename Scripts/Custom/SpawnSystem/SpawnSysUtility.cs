@@ -103,7 +103,7 @@ namespace Server.Custom.SpawnSystem
                 }
                 catch (Exception ex)
                 {
-                    SendConsoleMsg(ConsoleColor.DarkRed, $"Spawn System - Get Spawn Location: {ex.Message}");
+                    SendConsoleMsg(ConsoleColor.DarkRed, $"Spawn Location Error: {ex.Message}");
                 }
             });
         }
@@ -168,7 +168,7 @@ namespace Server.Custom.SpawnSystem
                 }
                 catch (Exception ex)
                 {
-                    SendConsoleMsg(ConsoleColor.DarkRed, $"Spawn System - Build Error: {ex.Message}");
+                    SendConsoleMsg(ConsoleColor.DarkRed, $"Build Spawn Error: {ex.Message}");
                 }
             }
             else
@@ -308,7 +308,7 @@ namespace Server.Custom.SpawnSystem
             }
             catch (Exception ex)
             {
-                SendConsoleMsg(ConsoleColor.DarkRed, $"UORespawn: An error occurred: {ex.Message}");
+                SendConsoleMsg(ConsoleColor.DarkRed, $"Clean Up Error: {ex.Message}");
             }
         }
 
@@ -397,7 +397,7 @@ namespace Server.Custom.SpawnSystem
         {
             Console.ForegroundColor = color;
 
-            Console.WriteLine(message);
+            Console.WriteLine($"UORespawn: {message}");
 
             Console.ResetColor();
         }

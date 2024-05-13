@@ -26,7 +26,16 @@ namespace Server.Custom.SpawnSystem.Mobiles
         [Constructable]
         public TownNPC() : base(AIType.AI_Vendor, FightMode.None, 10, 1, 0.2, 0.4)
         {
-            npcType = Utility.RandomList(NPCTypes.Merchant, NPCTypes.Mage, NPCTypes.Scout, NPCTypes.Adventurer, NPCTypes.Elitist, NPCTypes.Peasant, NPCTypes.Cleric);
+            npcType = Utility.RandomList
+                (
+                    NPCTypes.Merchant,
+                    NPCTypes.Mage,
+                    NPCTypes.Scout,
+                    NPCTypes.Adventurer,
+                    NPCTypes.Elitist,
+                    NPCTypes.Peasant,
+                    NPCTypes.Cleric
+                );
 
             Title = $"the {npcType}";
 

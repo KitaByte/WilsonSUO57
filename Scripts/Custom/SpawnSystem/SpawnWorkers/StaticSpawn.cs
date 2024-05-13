@@ -34,7 +34,7 @@ namespace Server.Custom.SpawnSystem
             }
             catch
             {
-                SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "UORspawn: Factory => Statics Error!");
+                SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "Factory => Statics Error!");
             }
 
             objectPool.Free();

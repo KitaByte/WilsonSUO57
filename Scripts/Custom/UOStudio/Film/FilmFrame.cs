@@ -10,7 +10,9 @@ namespace Server.Custom.UOStudio
 
         public List<PropInfo> Props { get; set; }
 
-        public List<int> Sounds { get; set; }
+        public int SoundID { get; set; }
+
+        public EffectInfo Effect_Info { get; set; }
 
         public Point3D Location { get; set; }
 
@@ -25,8 +27,6 @@ namespace Server.Custom.UOStudio
         public FilmFrame()
         {
             Props = new List<PropInfo>();
-
-            Sounds = new List<int>();
         }
 
         public FilmFrame(Mobile actor, FilmState state, string arg)
@@ -35,7 +35,9 @@ namespace Server.Custom.UOStudio
 
             Props = new List<PropInfo>();
 
-            Sounds = new List<int>();
+            SoundID = -1;
+
+            Effect_Info = new EffectInfo(SETypes.None, Point3D.Zero);
 
             FrameDouble.CopyActor(actor);
 
@@ -144,15 +146,11 @@ namespace Server.Custom.UOStudio
                 }
             }
 
-            writer.Write(Sounds.Count);
+            writer.Write(SoundID);
 
-            if (Sounds.Count > 0)
-            {
-                foreach (var sound in Sounds)
-                {
-                    writer.Write(sound);
-                }
-            }
+            writer.Write((int)Effect_Info.SE_Effect);
+
+            writer.Write(Effect_Info.Location);
         }
 
         internal void Export(StreamWriter writer)
@@ -179,88 +177,94 @@ namespace Server.Custom.UOStudio
                 }
             }
 
-            writer.WriteLine(Sounds.Count);
+            writer.WriteLine(SoundID);
 
-            if (Sounds.Count > 0)
+            writer.WriteLine((int)Effect_Info.SE_Effect);
+
+            writer.WriteLine($"{Location.X}:{Location.Y}:{Location.Z}");
+        }
+
+        internal void Load(GenericReader reader, int version)
+        {
+            if (version > -1)
             {
-                foreach (var sound in Sounds)
+                Location = reader.ReadPoint3D();
+
+                MoveDirection = StudioEngine.GetDirection(reader.ReadString());
+
+                string state = reader.ReadString();
+
+                State = (FilmState)Enum.Parse(typeof(FilmState), state);
+
+                Line = reader.ReadString();
+
+                Action = reader.ReadString();
+
+                FrameDouble = new BodyDouble();
+
+                FrameDouble.Load(reader, version);
+
+                Props = new List<PropInfo>();
+
+                int countProp = reader.ReadInt();
+
+                for (int i = 0; i < countProp; i++)
                 {
-                    writer.WriteLine(sound);
+                    var info = new PropInfo();
+
+                    info.LoadPorp(reader, version);
+
+                    Props.Add(info);
                 }
+
+                SoundID = reader.ReadInt();
+            }
+
+            if (version > 0)
+            {
+                Effect_Info = new EffectInfo((SETypes)reader.ReadInt(), reader.ReadPoint3D());
             }
         }
 
-        internal void Load(GenericReader reader)
+        internal void Import(StreamReader reader, int version)
         {
-            Location = reader.ReadPoint3D();
-
-            MoveDirection = StudioEngine.GetDirection(reader.ReadString());
-
-            string state = reader.ReadString();
-
-            State = (FilmState)Enum.Parse(typeof(FilmState), state);
-
-            Line = reader.ReadString();
-
-            Action = reader.ReadString();
-
-            FrameDouble = new BodyDouble();
-
-            FrameDouble.Load(reader);
-
-            Props = new List<PropInfo>();
-
-            int countProp = reader.ReadInt();
-
-            for (int i = 0; i < countProp; i++)
+            if (version > -1)
             {
-                var info = new PropInfo(reader);
+                Location = Point3D.Parse(reader.ReadLine());
 
-                Props.Add(info);
+                MoveDirection = (Direction)Enum.Parse(typeof(Direction), reader.ReadLine());
+
+                State = (FilmState)Enum.Parse(typeof(FilmState), reader.ReadLine());
+
+                Line = reader.ReadLine();
+
+                Action = reader.ReadLine();
+
+                FrameDouble = new BodyDouble();
+
+                FrameDouble.Import(reader, version);
+
+                var countProps = int.Parse(reader.ReadLine());
+
+                for (int k = 0; k < countProps; k++)
+                {
+                    PropInfo prop = new PropInfo();
+
+                    prop.Import(reader, version);
+
+                    Props.Add(prop);
+                }
+
+                SoundID = int.Parse(reader.ReadLine());
             }
 
-            Sounds = new List<int>();
-
-            int countSound = reader.ReadInt();
-
-            for (int i = 0; i < countSound; i++)
+            if (version > 0)
             {
-                Sounds.Add(reader.ReadInt());
-            }
-        }
+                SETypes type = (SETypes)int.Parse(reader.ReadLine());
 
-        internal void Import(StreamReader reader)
-        {
-            Location = Point3D.Parse(reader.ReadLine());
+                Point3D location = new Point3D(int.Parse(reader.ReadLine()), int.Parse(reader.ReadLine()), int.Parse(reader.ReadLine()));
 
-            MoveDirection = (Direction)Enum.Parse(typeof(Direction), reader.ReadLine());
-
-            State = (FilmState)Enum.Parse(typeof(FilmState), reader.ReadLine());
-
-            Line = reader.ReadLine();
-
-            Action = reader.ReadLine();
-
-            FrameDouble = new BodyDouble();
-
-            FrameDouble.Import(reader);
-
-            var countProps = int.Parse(reader.ReadLine());
-
-            for (int k = 0; k < countProps; k++)
-            {
-                PropInfo prop = new PropInfo();
-
-                prop.Import(reader);
-
-                Props.Add(prop);
-            }
-
-            var countSounds = int.Parse(reader.ReadLine());
-
-            for (int l = 0; l < countSounds; l++)
-            {
-                Sounds.Add(int.Parse(reader.ReadLine()));
+                Effect_Info = new EffectInfo(type, location);
             }
         }
     }

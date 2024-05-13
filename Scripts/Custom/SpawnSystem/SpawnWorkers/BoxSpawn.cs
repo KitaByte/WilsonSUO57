@@ -70,7 +70,7 @@ namespace Server.Custom.SpawnSystem
             }
             catch
             {
-                SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "UORspawn: Factory => Box Error!");
+                SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "Factory => Box Error!");
             }
 
             return string.Empty;

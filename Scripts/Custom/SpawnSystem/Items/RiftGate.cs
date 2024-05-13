@@ -34,9 +34,13 @@ namespace Server.Custom.SpawnSystem.Items
 
             Light = LightType.Circle300;
 
-            InternalTimer t = new InternalTimer(this);
-
-            t.Start();
+            Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+            {
+                if (!Deleted)
+                {
+                    Delete();
+                }
+            });
         }
 
         public RiftGate(Serial serial) : base(serial)
@@ -53,27 +57,6 @@ namespace Server.Custom.SpawnSystem.Items
             base.Deserialize(reader);
 
             Delete();
-        }
-
-        //Deletion Timer
-        private class InternalTimer : Timer
-        {
-            private readonly Item m_Item;
-
-            public InternalTimer(Item item) : base(TimeSpan.FromSeconds(30.0))
-            {
-                Priority = TimerPriority.OneSecond;
-
-                m_Item = item;
-            }
-
-            protected override void OnTick()
-            {
-                if (!m_Item.Deleted)
-                {
-                    m_Item.Delete();
-                }
-            }
         }
     }
 }

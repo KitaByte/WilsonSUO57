@@ -273,7 +273,7 @@ namespace Server.Custom.SpawnSystem.Mobiles
             {
                 Utility.AssignRandomFacialHair(bc);
 
-                bc.FacialHairHue = Utility.RandomHairHue();
+                bc.FacialHairHue = bc.HairHue;
             }
         }
 

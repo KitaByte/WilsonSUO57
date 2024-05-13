@@ -8,7 +8,7 @@ namespace Server.Custom.SpawnSystem
 {
     internal static class SpawnSysDataBase
     {
-        private const string Version = "1.0.0.2";
+        private const string Version = "1.0.0.3";
 
         private static readonly string WorldSpawnFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "UOR_WorldSpawn.csv");
 
@@ -62,7 +62,7 @@ namespace Server.Custom.SpawnSystem
 
             LoadSpawnSettings();
 
-            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "UORespawn: Spawns Loaded...}");
+            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Spawn Data Loaded...}");
         }
 
         internal static void ReLoadSpawns()
@@ -139,7 +139,7 @@ namespace Server.Custom.SpawnSystem
             }
             catch (Exception ex)
             {
-                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"UORespawn: Error loading world spawn: {ex.Message}");
+                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"Loading World Spawn Error: {ex.Message}");
             }
         }
 
@@ -206,7 +206,7 @@ namespace Server.Custom.SpawnSystem
             }
             catch (Exception ex)
             {
-                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"UORespawn: Error loading static spawn: {ex.Message}");
+                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"Loading Static Spawn Error: {ex.Message}");
             }
         }
 
@@ -280,7 +280,7 @@ namespace Server.Custom.SpawnSystem
             }
             catch (Exception ex)
             {
-                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"UORespawn: Error loading spawn data: {ex.Message}");
+                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"Loading Spawn Data Error: {ex.Message}");
             }
         }
 
@@ -370,7 +370,7 @@ namespace Server.Custom.SpawnSystem
                         {
                             if (Version != version)
                             {
-                                SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "UORespawn: Version out of sync, update scripts!");
+                                SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Update Needed, Update Scripts!");
                             }
                         }
 
@@ -380,7 +380,7 @@ namespace Server.Custom.SpawnSystem
             }
             catch (Exception ex)
             {
-                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"UORespawn: Error loading spawn chance: {ex.Message}");
+                SpawnSysUtility.SendConsoleMsg(ConsoleColor.DarkRed, $"Loading Spawn Chance Error: {ex.Message}");
             }
         }
 

@@ -19,17 +19,17 @@ namespace Server.Custom.UOStudio
             Dragable = true;
             Resizable = false;
 
-            AddBackground(X, Y, 100, 70, 40000);
+            AddBackground(X, Y, 125, 70, 40000);
 
             AddTextEntry(X + 15, Y + 10, 60, 25, 53, 0, _Film._SoundID.ToString());
 
-            AddLabel(X + 50, Y + 10, 1153, "SFX");
+            AddLabel(X + 80, Y + 10, 1153, "SFX");
 
             AddButton(X + 20, Y + 40, 2362, 2362, 1, GumpButtonType.Reply, 0);
 
-            AddButton(X + 45, Y + 40, 2361, 2361, 2, GumpButtonType.Reply, 0);
+            AddButton(X + 57, Y + 40, 2361, 2361, 2, GumpButtonType.Reply, 0);
 
-            AddButton(X + 70, Y + 40, 2360, 2360, 3, GumpButtonType.Reply, 0);
+            AddButton(X + 95, Y + 40, 2360, 2360, 3, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(RelayInfo info)

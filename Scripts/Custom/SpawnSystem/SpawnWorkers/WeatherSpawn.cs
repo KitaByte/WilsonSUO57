@@ -67,7 +67,7 @@ namespace Server.Custom.SpawnSystem
                 }
                 catch
                 {
-                    SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "UORspawn: Factory => Weather Error!");
+                    SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "Factory => Weather Error!");
                 }
             }
 

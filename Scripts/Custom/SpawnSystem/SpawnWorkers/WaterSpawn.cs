@@ -61,7 +61,7 @@ namespace Server.Custom.SpawnSystem
                 }
                 catch
                 {
-                    SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "UORspawn: Factory => Water Error!");
+                    SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "Factory => Water Error!");
                 }
             }
 

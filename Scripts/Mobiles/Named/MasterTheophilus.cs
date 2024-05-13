@@ -68,8 +68,8 @@ namespace Server.Mobiles
             if ( Utility.RandomDouble() < 0.15 )
             c.DropItem( new DisintegratingThesisNotes() );
 
-            if ( Paragon.ChestChance > Utility.RandomDouble() )
-            c.DropItem( new ParagonChest( Name, 5 ) );
+            if (Paragon.ChestChance > Utility.RandomDouble())
+                c.DropItem(new ParagonChest(Name, 5));
         }
 
         /*public override bool GivesMLMinorArtifact

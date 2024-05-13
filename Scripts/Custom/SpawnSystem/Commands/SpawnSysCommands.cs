@@ -100,23 +100,23 @@ namespace Server.Custom.SpawnSystem
         {
             List<string> statics = new List<string>();
 
-            for (int i = 0; i < TileData.MaxItemValue; i++)
+            try
             {
-                try
+                string name;
+
+                for (int i = 0; i < TileData.MaxItemValue; i++)
                 {
-                    string name = TileData.ItemTable[i & TileData.MaxItemValue].Name;
+                    name = TileData.ItemTable[i & TileData.MaxItemValue].Name;
 
                     if (!string.IsNullOrEmpty(name) && !statics.Contains(name))
                     {
                         statics.Add(TileData.ItemTable[i & TileData.MaxItemValue].Name);
                     }
                 }
-                catch (Exception ex)
-                {
-                    SpawnSysUtility.SendConsoleMsg(ConsoleColor.Red, $"UORespawn: {ex}");
-
-                    break;
-                }
+            }
+            catch (Exception ex)
+            {
+                SpawnSysUtility.SendConsoleMsg(ConsoleColor.Red, $"Gen Static Error: {ex}");
             }
 
             if (statics.Count > 0)
@@ -182,7 +182,7 @@ namespace Server.Custom.SpawnSystem
         {
             World.Save();
 
-            e.Mobile.SendMessage($"UORespawn Stats Pushed!");
+            e.Mobile.SendMessage($"UORespawn: Spawn Stats Pushed!");
         }
     }
 }

@@ -182,8 +182,7 @@ namespace Server
 			SendLocationEffect(p, map, itemID, duration, 10, hue, renderMode);
 		}
 
-		public static void SendLocationEffect(
-			IPoint3D p, Map map, int itemID, int duration, int speed, int hue, int renderMode)
+		public static void SendLocationEffect(IPoint3D p, Map map, int itemID, int duration, int speed, int hue, int renderMode)
 		{
 			SendPacket(p, map, new LocationEffect(p, itemID, speed, duration, hue, renderMode));
 		}
@@ -198,8 +197,7 @@ namespace Server
 			SendLocationParticles(e, itemID, speed, duration, 0, 0, effect, unknown);
 		}
 
-		public static void SendLocationParticles(
-			IEntity e, int itemID, int speed, int duration, int hue, int renderMode, int effect, int unknown)
+		public static void SendLocationParticles(IEntity e, int itemID, int speed, int duration, int hue, int renderMode, int effect, int unknown)
 		{
 			Map map = e.Map;
 

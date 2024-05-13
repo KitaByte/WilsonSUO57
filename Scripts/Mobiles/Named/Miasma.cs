@@ -9,7 +9,6 @@ namespace Server.Mobiles
         [Constructable]
         public Miasma()
         {
-
             Name = "Miasma";
             Hue = 0x8FD;
 
@@ -61,8 +60,8 @@ namespace Server.Mobiles
         {
             base.OnDeath( c );
 
-            if ( Paragon.ChestChance > Utility.RandomDouble() )
-            c.DropItem( new ParagonChest( Name, 5 ) );
+            if (Paragon.ChestChance > Utility.RandomDouble())
+                c.DropItem(new ParagonChest(Name, 5));
 
             if ( Utility.RandomDouble() < 0.025 )
             {

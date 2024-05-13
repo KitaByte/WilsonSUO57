@@ -53,7 +53,7 @@ namespace Server.Custom.SpawnSystem
                 }
                 catch
                 {
-                    SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "UORspawn: Factory => Tile 1 Error!");
+                    SpawnSysUtility.SendConsoleMsg(System.ConsoleColor.DarkRed, "Factory => Tile Error!");
                 }
             }
 

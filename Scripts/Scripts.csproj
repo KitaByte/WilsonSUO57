@@ -404,6 +404,8 @@
     <Compile Include="Custom\Misc\GoldenFerret.cs" />
     <Compile Include="Custom\Misc\GoldenShovel.cs" />
     <Compile Include="Custom\Misc\HamSpecial.cs" />
+    <Compile Include="Custom\Misc\JackofallTrades.cs" />
+    <Compile Include="Custom\Misc\MothersDayRose.cs" />
     <Compile Include="Custom\Misc\MovingPlatform.cs" />
     <Compile Include="Custom\Misc\ReferralTicket.cs" />
     <Compile Include="Custom\Misc\WilsonDev.cs" />
@@ -521,11 +523,13 @@
     <Compile Include="Custom\UOHotBar\HotBarIcon.cs" />
     <Compile Include="Custom\UOHotBar\HotBarIconGump.cs" />
     <Compile Include="Custom\UOStudio\Film\BodyDouble.cs" />
+    <Compile Include="Custom\UOStudio\Film\EffectInfo.cs" />
     <Compile Include="Custom\UOStudio\Film\FilmEntry.cs" />
     <Compile Include="Custom\UOStudio\Film\FilmFrame.cs" />
     <Compile Include="Custom\UOStudio\Film\PropInfo.cs" />
     <Compile Include="Custom\UOStudio\Player\FilmPlayer.cs" />
     <Compile Include="Custom\UOStudio\Player\StudioActor.cs" />
+    <Compile Include="Custom\UOStudio\Prop\StudioEffectGump.cs" />
     <Compile Include="Custom\UOStudio\Prop\StudioModGump.cs" />
     <Compile Include="Custom\UOStudio\StudioCommand.cs" />
     <Compile Include="Custom\UOStudio\StudioEngine.cs" />
@@ -707,6 +711,7 @@
     <Compile Include="Custom\UOStudio\Prop\StudioPropGump.cs" />
     <Compile Include="Custom\UOStudio\Prop\StudioSoundGump.cs" />
     <Compile Include="Custom\UOStudio\StudioUtility.cs" />
+    <Compile Include="Custom\UOStudio\StudioEffects.cs" />
     <Compile Include="Custom\UOSurvivalEvent\Commands\SurvivalCommands.cs" />
     <Compile Include="Custom\UOSurvivalEvent\Islands\BaseIsland.cs" />
     <Compile Include="Custom\UOSurvivalEvent\Islands\BloodIsland.cs" />

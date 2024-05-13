@@ -27,67 +27,6 @@ namespace Server.Custom.UOStudio
 
         internal static readonly string ImportPath = Path.Combine(Studio_DIR, "IMPORT");
 
-        private static readonly string Studio_FileName = "UOS_Settings.csv";
-
-        private static string cacheData;
-
-        internal static bool HasData(out int version)
-        {
-            if (!File.Exists(Path.Combine(Studio_DIR, Studio_FileName)))
-            {
-                try
-                {
-                    File.WriteAllText(Path.Combine(Studio_DIR, Studio_FileName), "UO_Studio_2024,Version_1.0.0.1"); // Init Ver
-                }
-                catch
-                {
-                    version = 0;
-
-                    return false;
-                }
-
-                version = 1;
-
-                return true;
-            }
-            else
-            {
-                try
-                {
-                    cacheData = File.ReadAllText(Path.Combine(Studio_DIR, Studio_FileName));
-                }
-                catch
-                {
-                    version = 0;
-
-                    return false;
-                }
-
-                if (!string.IsNullOrEmpty(cacheData) && int.TryParse(cacheData.ToCharArray().Last().ToString(), out int val))
-                {
-                    version = val;
-                }
-                else
-                {
-                    version = 1;
-                }
-
-                return true;
-            }
-        }
-
-        private static void SaveCurrent()
-        {
-            try
-            {
-                File.WriteAllText(Path.Combine(Studio_DIR, Studio_FileName), Version);
-            }
-            catch
-            {
-                // do nothing
-            }
-        }
-
         internal static Dictionary<Mobile, StudioFilm> Actors { get; private set; }
 
         internal static void AddActor(Mobile from, StudioFilm film)
@@ -114,6 +53,8 @@ namespace Server.Custom.UOStudio
 
             Actors = new Dictionary<Mobile, StudioFilm>();
 
+            EventSink.ServerStarted += EventSink_ServerStarted;
+
             EventSink.Movement += EventSink_Movement;
 
             EventSink.Speech += EventSink_Speech;
@@ -127,6 +68,49 @@ namespace Server.Custom.UOStudio
             EventSink.BeforeWorldSave += EventSink_BeforeWorldSave;
 
             EventSink.AfterWorldSave += EventSink_AfterWorldSave;
+        }
+
+        private static void EventSink_ServerStarted()
+        {
+            var blockers = World.Items.Values.Where(b => b is Blocker && b.Hue == 2752)?.ToList();
+
+            if (blockers != null && blockers.Count > 0)
+            {
+                Console.WriteLine($"Cleaned {blockers.Count} Studio Blockers!");
+
+                foreach (var blocker in blockers)
+                {
+                    if (!blocker.Deleted)
+                    {
+                        blocker.Delete();
+                    }
+                }
+
+                var losblockers = World.Items.Values.Where(b => b is LOSBlocker && b.Hue == 2752)?.ToList();
+
+                if (losblockers != null && losblockers.Count > 0)
+                {
+                    Console.WriteLine($"Cleaned {losblockers.Count} Studio LOSBlockers!");
+
+                    foreach (var losblocker in losblockers)
+                    {
+                        if (!losblocker.Deleted)
+                        {
+                            losblocker.Delete();
+                        }
+                    }
+                }
+            }
+
+            var recorders = World.Items.Values.Where(r => r is VideoRecorder)?.ToList();
+
+            if (recorders != null && recorders.Count > 0)
+            {
+                for (int i = 0; i < recorders.Count; i++)
+                {
+                    recorders[i].Hue = 2734;
+                }
+            }
         }
 
         private static void ValidateDirectories()
@@ -231,8 +215,6 @@ namespace Server.Custom.UOStudio
         private static void EventSink_AfterWorldSave(AfterWorldSaveEventArgs e)
         {
             IsPaused = false;
-
-            SaveCurrent();
         }
 
         private static void SendFrameData(Mobile actor, FilmState state, string arg)
@@ -276,39 +258,25 @@ namespace Server.Custom.UOStudio
         {
             Point3D point;
 
-            for (var x = stage.Start.X; x < stage.Start.X + stage.Width + 1; x++)
+            for (var x = Math.Min(stage.Start.X, stage.End.X); x <= Math.Max(stage.Start.X, stage.End.X); x++)
             {
                 var z = map.GetAverageZ(x, stage.Start.Y) + 1;
 
                 point = new Point3D(x, stage.Start.Y, z);
-
                 AddBlockers(from, recorder, point, map);
-            }
-
-            for (var x = stage.End.X; x > stage.End.X - stage.Width; x--)
-            {
-                var z = map.GetAverageZ(x, stage.End.Y) + 1;
 
                 point = new Point3D(x, stage.End.Y, z);
-
                 AddBlockers(from, recorder, point, map);
             }
 
-            for (var y = stage.Start.Y; y < stage.Start.Y + stage.Height + 1; y++)
+            for (var y = Math.Min(stage.Start.Y, stage.End.Y); y <= Math.Max(stage.Start.Y, stage.End.Y); y++)
             {
                 var z = map.GetAverageZ(stage.Start.X, y) + 1;
 
                 point = new Point3D(stage.Start.X, y, z);
-
                 AddBlockers(from, recorder, point, map);
-            }
-
-            for (var y = stage.End.Y; y > stage.End.Y - stage.Height; y--)
-            {
-                var z = map.GetAverageZ(stage.End.X, y) + 1;
 
                 point = new Point3D(stage.End.X, y, z);
-
                 AddBlockers(from, recorder, point, map);
             }
         }

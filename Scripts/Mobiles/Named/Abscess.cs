@@ -82,10 +82,10 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);		
 			
-            c.DropItem(new AbscessTail());			
-			
-            if ( Paragon.ChestChance > Utility.RandomDouble() )
-            c.DropItem( new ParagonChest( Name, 5 ) );
+            c.DropItem(new AbscessTail());
+
+            if (Paragon.ChestChance > Utility.RandomDouble())
+                c.DropItem(new ParagonChest(Name, 5));
         }
 
         public override void Serialize(GenericWriter writer)

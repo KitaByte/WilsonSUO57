@@ -18,7 +18,7 @@ namespace Server.Custom.UOStudio
             Resizable = false;
             Dragable = true;
 
-            AddBackground(X, Y, 150, 190, 40000);
+            AddBackground(X, Y, 150, 220, 40000);
 
             AddLabel(X + 50, Y + 12, 2720, "UO Studio");
 
@@ -43,7 +43,10 @@ namespace Server.Custom.UOStudio
             AddLabel(X + 35, Y + 127, 2499, "Add Mod");
 
             AddButton(X + 15, Y + 161, 2361, 2360, 5, GumpButtonType.Reply, 0);
-            AddLabel(X + 35, Y + 157, 2499, "Cancel");
+            AddLabel(X + 35, Y + 157, 2499, "Add Effect");
+
+            AddButton(X + 15, Y + 191, 2360, 2361, 6, GumpButtonType.Reply, 0);
+            AddLabel(X + 35, Y + 187, 2499, "Cancel");
         }
 
         public override void OnResponse(RelayInfo info)
@@ -96,7 +99,12 @@ namespace Server.Custom.UOStudio
 
                 case 2:
                     {
-                        SendGump(new StudioPropGump(User, _Recorder.Film, X + 25, Y + 130, this));
+                        if (User.HasGump(typeof(StudioPropGump)))
+                        {
+                            User.CloseGump(typeof(StudioPropGump));
+                        }
+
+                        SendGump(new StudioPropGump(User, _Recorder.Film, X, Y + 220, this));
 
                         Refresh(true, false);
 
@@ -105,7 +113,12 @@ namespace Server.Custom.UOStudio
 
                 case 3:
                     {
-                        SendGump(new StudioSoundGump(User, _Recorder.Film, X + 25, Y + 130, this));
+                        if (User.HasGump(typeof(StudioSoundGump)))
+                        {
+                            User.CloseGump(typeof(StudioSoundGump));
+                        }
+
+                        SendGump(new StudioSoundGump(User, _Recorder.Film, X, Y + 220, this));
 
                         Refresh(true, false);
 
@@ -114,7 +127,12 @@ namespace Server.Custom.UOStudio
 
                 case 4:
                     {
-                        SendGump(new StudioModGump(User, X + 25, Y + 130, this));
+                        if (User.HasGump(typeof(StudioModGump)))
+                        {
+                            User.CloseGump(typeof(StudioModGump));
+                        }
+
+                        SendGump(new StudioModGump(User, X, Y + 220, this));
 
                         Refresh(true, false);
 
@@ -122,6 +140,20 @@ namespace Server.Custom.UOStudio
                     }
 
                 case 5:
+                    {
+                        if (User.HasGump(typeof(StudioEffectGump)))
+                        {
+                            User.CloseGump(typeof(StudioEffectGump));
+                        }
+
+                        SendGump(new StudioEffectGump(User, _Recorder.Film, X, Y + 220, this));
+
+                        Refresh(true, false);
+
+                        break;
+                    }
+
+                case 6:
                     {
                         User.SendMessage(43, "Cancelled Recording!");
 
@@ -148,6 +180,8 @@ namespace Server.Custom.UOStudio
             User.CloseGump(typeof(StudioSoundGump));
 
             User.CloseGump(typeof(StudioModGump));
+
+            User.CloseGump(typeof(StudioEffectGump));
 
             base.Close();
         }

@@ -14,11 +14,6 @@ namespace Server.Custom.UOStudio
         {
         }
 
-        public PropInfo(GenericReader reader)
-        {
-            LoadPorp(reader);
-        }
-
         public PropInfo(int id, int hue, int x, int y, int z)
         {
             ID = id;
@@ -64,24 +59,30 @@ namespace Server.Custom.UOStudio
             writer.WriteLine(Z);
         }
 
-        public void LoadPorp(GenericReader reader)
+        public void LoadPorp(GenericReader reader, int version)
         {
-            ID = reader.ReadInt();
-            HUE = reader.ReadInt();
+            if (version > -1)
+            {
+                ID = reader.ReadInt();
+                HUE = reader.ReadInt();
 
-            X = reader.ReadInt();
-            Y = reader.ReadInt();
-            Z = reader.ReadInt();
+                X = reader.ReadInt();
+                Y = reader.ReadInt();
+                Z = reader.ReadInt();
+            }
         }
 
-        public void Import(StreamReader reader)
+        public void Import(StreamReader reader, int version)
         {
-            ID = int.Parse(reader.ReadLine());
-            HUE = int.Parse(reader.ReadLine());
+            if (version > -1)
+            {
+                ID = int.Parse(reader.ReadLine());
+                HUE = int.Parse(reader.ReadLine());
 
-            X = int.Parse(reader.ReadLine());
-            Y = int.Parse(reader.ReadLine());
-            Z = int.Parse(reader.ReadLine());
+                X = int.Parse(reader.ReadLine());
+                Y = int.Parse(reader.ReadLine());
+                Z = int.Parse(reader.ReadLine());
+            }
         }
     }
 }
