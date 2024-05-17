@@ -20,45 +20,62 @@ namespace Server.Custom.UOStudio
             Resizable = false;
             Dragable = true;
 
-            AddBackground(X, Y, 110, 100, 40000);
+            AddBackground(X, Y, 115, 335, 40000);
 
-            AddLabel(X + 35, Y + 12, 2720, "Effects");
+            AddLabel(X + 40, Y + 12, 2720, "Effects");
 
             AddButton(X + 20, Y + 39, 2362, 2362, 1, GumpButtonType.Reply, 0);
 
-            AddLabel(X + 40, Y + 35, 1153, "Lightning");
+            AddLabel(X + 40, Y + 35, 1153, $"{SETypes.Lightning}");
 
-            //AddButton(X + 45, Y + 70, 2361, 2361, 2, GumpButtonType.Reply, 0);
+            AddButton(X + 20, Y + 69, 2362, 2362, 2, GumpButtonType.Reply, 0);
 
-            //AddLabel(X + 60, Y + 40, 1153, "HUE");
+            AddLabel(X + 40, Y + 65, 1153, $"{SETypes.Fire}");
 
-            //AddButton(X + 70, Y + 70, 2360, 2360, 3, GumpButtonType.Reply, 0);
+            AddButton(X + 20, Y + 99, 2362, 2362, 3, GumpButtonType.Reply, 0);
 
-            //AddLabel(X + 60, Y + 40, 1153, "HUE");
+            AddLabel(X + 40, Y + 95, 1153, $"{SETypes.FireBall}");
+
+            AddButton(X + 20, Y + 129, 2362, 2362, 4, GumpButtonType.Reply, 0);
+
+            AddLabel(X + 40, Y + 125, 1153, $"{SETypes.Explosion}");
+
+            AddButton(X + 20, Y + 159, 2362, 2362, 5, GumpButtonType.Reply, 0);
+
+            AddLabel(X + 40, Y + 155, 1153, $"{SETypes.Bee}");
+
+            AddButton(X + 20, Y + 189, 2362, 2362, 6, GumpButtonType.Reply, 0);
+
+            AddLabel(X + 40, Y + 185, 1153, $"{SETypes.Sparkle}");
+
+            AddButton(X + 20, Y + 219, 2362, 2362, 7, GumpButtonType.Reply, 0);
+
+            AddLabel(X + 40, Y + 215, 1153, $"{SETypes.RedSparkle}");
+
+            AddButton(X + 20, Y + 249, 2362, 2362, 8, GumpButtonType.Reply, 0);
+
+            AddLabel(X + 40, Y + 245, 1153, $"{SETypes.Smoke}");
+
+            AddButton(X + 20, Y + 279, 2362, 2362, 9, GumpButtonType.Reply, 0);
+
+            AddLabel(X + 40, Y + 275, 1153, $"{SETypes.Gate}");
+
+            AddButton(X + 20, Y + 309, 2362, 2362, 10, GumpButtonType.Reply, 0);
+
+            AddLabel(X + 40, Y + 305, 1153, $"{SETypes.Confetti}");
         }
 
         public override void OnResponse(RelayInfo info)
         {
-            switch (info.ButtonID)
-            {
-                case 0:
-                    {
-                        Close();
-
-                        break;
-                    }
-
-                case 1:
-                    {
-                        User.Target = new StudioEffectTarget(_Film, info.ButtonID);
-
-                        break;
-                    }
-            }
-
             if (info.ButtonID > 0)
             {
+                User.Target = new StudioEffectTarget(_Film, info.ButtonID);
+
                 Refresh(true, false);
+            }
+            else
+            {
+                Close();
             }
         }
     }
@@ -103,6 +120,78 @@ namespace Server.Custom.UOStudio
                             StudioEffects.PlayLightningEffect(entity);
 
                             _Film.AddEffect(SETypes.Lightning, entity.Location);
+
+                            break;
+                        }
+                    case 2:
+                        {
+                            StudioEffects.PlayFireEffect(entity);
+
+                            _Film.AddEffect(SETypes.Fire, entity.Location);
+
+                            break;
+                        }
+                    case 3:
+                        {
+                            StudioEffects.PlayFireBallEffect(entity);
+
+                            _Film.AddEffect(SETypes.FireBall, entity.Location);
+
+                            break;
+                        }
+                    case 4:
+                        {
+                            StudioEffects.PlayExplosionEffect(entity);
+
+                            _Film.AddEffect(SETypes.Explosion, entity.Location);
+
+                            break;
+                        }
+                    case 5:
+                        {
+                            StudioEffects.PlayBeeEffect(entity);
+
+                            _Film.AddEffect(SETypes.Bee, entity.Location);
+
+                            break;
+                        }
+                    case 6:
+                        {
+                            StudioEffects.PlaySparkleEffect(entity);
+
+                            _Film.AddEffect(SETypes.Sparkle, entity.Location);
+
+                            break;
+                        }
+                    case 7:
+                        {
+                            StudioEffects.PlayRedSparkleEffect(entity);
+
+                            _Film.AddEffect(SETypes.RedSparkle, entity.Location);
+
+                            break;
+                        }
+                    case 8:
+                        {
+                            StudioEffects.PlaySmokeEffect(entity);
+
+                            _Film.AddEffect(SETypes.Smoke, entity.Location);
+
+                            break;
+                        }
+                    case 9:
+                        {
+                            StudioEffects.PlayGateEffect(entity);
+
+                            _Film.AddEffect(SETypes.Gate, entity.Location);
+
+                            break;
+                        }
+                    case 10:
+                        {
+                            StudioEffects.PlayConfettiEffect(entity);
+
+                            _Film.AddEffect(SETypes.Confetti, entity.Location);
 
                             break;
                         }

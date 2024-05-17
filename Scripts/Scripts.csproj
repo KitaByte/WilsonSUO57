@@ -276,6 +276,8 @@
     <Compile Include="Context Menus\TeachEntry.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Custom\CharacterTools\PlayerTransferCommand.cs" />
+    <Compile Include="Custom\CharacterTools\PlayerTransferCore.cs" />
     <Compile Include="Custom\DynamicNPC\Commands\DynCmdDebug.cs" />
     <Compile Include="Custom\DynamicNPC\Commands\DynCmdFindVendor.cs" />
     <Compile Include="Custom\DynamicNPC\Commands\DynCmdSpeech.cs" />
@@ -407,7 +409,9 @@
     <Compile Include="Custom\Misc\JackofallTrades.cs" />
     <Compile Include="Custom\Misc\MothersDayRose.cs" />
     <Compile Include="Custom\Misc\MovingPlatform.cs" />
+    <Compile Include="Custom\CharacterTools\PlayerTransferDeed.cs" />
     <Compile Include="Custom\Misc\ReferralTicket.cs" />
+    <Compile Include="Custom\Misc\SpellFocusingSash.cs" />
     <Compile Include="Custom\Misc\WilsonDev.cs" />
     <Compile Include="Custom\RegionBanner\RegionBannerCommand.cs" />
     <Compile Include="Custom\RegionBanner\RegionBannerCore.cs" />
@@ -1293,6 +1297,7 @@
     <Compile Include="Misc\ArchivedSaves.cs" />
     <Compile Include="Custom\Misc\HarvestInjury.cs" />
     <Compile Include="Misc\Replacer.cs" />
+    <Compile Include="Custom\Misc\ScavengerBag.cs" />
     <Compile Include="Misc\TaskPollingTimer.cs" />
     <Compile Include="Mobiles\Normal\CoconutCrab.cs" />
     <Compile Include="Mobiles\Normal\HungryCoconutCrab.cs" />

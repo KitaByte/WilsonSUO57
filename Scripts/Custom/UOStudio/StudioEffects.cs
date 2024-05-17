@@ -9,11 +9,11 @@ namespace Server.Custom.UOStudio
         Fire,
         FireBall,
         Explosion,
-        Snow,
+        Bee,
         Sparkle,
         RedSparkle,
         Smoke,
-        SmokeCloud,
+        Gate,
         Confetti
     }
 
@@ -34,21 +34,21 @@ namespace Server.Custom.UOStudio
                     break;
                 case SETypes.Lightning: PlayLightningEffect(entity);
                     break;
-                case SETypes.Fire:
+                case SETypes.Fire:      PlayFireEffect(entity);
                     break;
-                case SETypes.FireBall:
+                case SETypes.FireBall:  PlayFireBallEffect(entity);
                     break;
-                case SETypes.Explosion:
+                case SETypes.Explosion: PlayExplosionEffect(entity);
                     break;
-                case SETypes.Snow:
+                case SETypes.Bee:       PlayBeeEffect(entity);
                     break;
-                case SETypes.Sparkle:
+                case SETypes.Sparkle:   PlaySparkleEffect(entity);
                     break;
-                case SETypes.RedSparkle:
+                case SETypes.RedSparkle:PlayRedSparkleEffect(entity);
                     break;
-                case SETypes.Smoke:
+                case SETypes.Smoke:     PlaySmokeEffect(entity);
                     break;
-                case SETypes.SmokeCloud:
+                case SETypes.Gate:      PlayGateEffect(entity);
                     break;
                 case SETypes.Confetti:
                     break;
@@ -62,6 +62,96 @@ namespace Server.Custom.UOStudio
             if (obj is IEntity entity)
             {
                 Effects.SendBoltEffect(entity, true);
+            }
+        }
+
+        internal static void PlayFireEffect(object obj)
+        {
+            if (obj is IEntity entity)
+            {
+                Effects.SendLocationEffect(entity.Location, entity.Map, 0x3709, 30);
+
+                Effects.PlaySound(entity.Location, entity.Map, 0x225);
+            }
+        }
+
+        internal static void PlayFireBallEffect(object obj)
+        {
+            if (obj is IEntity entity)
+            {
+                Effects.SendLocationEffect(entity.Location, entity.Map, 0x36FE, 70);
+
+                Effects.PlaySound(entity.Location, entity.Map, 0x1DD);
+            }
+        }
+
+        internal static void PlayExplosionEffect(object obj)
+        {
+            if (obj is IEntity entity)
+            {
+                Effects.SendLocationEffect(entity.Location, entity.Map, 0x36B0, 35);
+
+                Effects.PlaySound(entity.Location, entity.Map, 0x207);
+            }
+        }
+
+        internal static void PlayBeeEffect(object obj)
+        {
+            if (obj is IEntity entity)
+            {
+                Effects.SendLocationEffect(entity.Location, entity.Map, 0x091B, 30);
+
+                Effects.PlaySound(entity.Location, entity.Map, 0x56A);
+            }
+        }
+
+        internal static void PlaySparkleEffect(object obj)
+        {
+            if (obj is IEntity entity)
+            {
+                Effects.SendLocationEffect(entity.Location, entity.Map, 0x373A, 65);
+
+                Effects.PlaySound(entity.Location, entity.Map, 0x215);
+            }
+        }
+
+        internal static void PlayRedSparkleEffect(object obj)
+        {
+            if (obj is IEntity entity)
+            {
+                Effects.SendLocationEffect(entity.Location, entity.Map, 0x374A, 30);
+
+                Effects.PlaySound(entity.Location, entity.Map, 0x210);
+            }
+        }
+
+        internal static void PlaySmokeEffect(object obj)
+        {
+            if (obj is IEntity entity)
+            {
+                Effects.SendLocationEffect(entity.Location, entity.Map, 0x3728, 15);
+
+                Effects.PlaySound(entity.Location, entity.Map, 0x228);
+            }
+        }
+
+        internal static void PlayGateEffect(object obj)
+        {
+            if (obj is IEntity entity)
+            {
+                Effects.SendLocationEffect(entity.Location, entity.Map, 0x1AF3, 45);
+
+                Effects.PlaySound(entity.Location, entity.Map, 0x20E);
+            }
+        }
+
+        internal static void PlayConfettiEffect(object obj)
+        {
+            if (obj is IEntity entity)
+            {
+                Effects.SendLocationEffect(entity.Location, entity.Map, 0x9F89, 25);
+
+                Effects.PlaySound(entity.Location, entity.Map, 0x664);
             }
         }
     }

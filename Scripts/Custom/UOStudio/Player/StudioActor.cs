@@ -13,6 +13,8 @@ namespace Server.Custom.UOStudio
         {
             AccessLevel = AccessLevel.Counselor;
 
+            IgnoreMobiles = true;
+
             InitStats(31, 41, 51);
 
             SpeechHue = Utility.RandomDyedHue();
