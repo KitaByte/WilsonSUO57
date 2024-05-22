@@ -41,3 +41,5 @@
 
 !/Data/*
 !/bin/rosyln/*
+/Release/net8.0-windows
+/Debug/net8.0-windows
