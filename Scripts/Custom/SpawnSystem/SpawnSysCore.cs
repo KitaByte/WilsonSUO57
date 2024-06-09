@@ -122,7 +122,7 @@ namespace Server.Custom.SpawnSystem
 
             _CleanUpList = new List<Mobile>();
 
-            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Lists Initialized...}");
+            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Lists Initialized...");
         }
 
         private static void SubscribeEvents()
@@ -147,7 +147,7 @@ namespace Server.Custom.SpawnSystem
 
             EventSink.Crashed += EventSink_Crashed;
 
-            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Events Attached...}");
+            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Events Attached...");
         }
 
         private static void StartTimer()
@@ -156,7 +156,7 @@ namespace Server.Custom.SpawnSystem
 
             _SpawnTimer.Start();
 
-            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Timer Started...}");
+            SpawnSysUtility.SendConsoleMsg(ConsoleColor.Yellow, "Timer Started...");
         }
 
         private static void EventSink_ServerStarted()

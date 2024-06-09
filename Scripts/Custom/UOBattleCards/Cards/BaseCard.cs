@@ -26,16 +26,19 @@ namespace Server.Services.UOBattleCards.Cards
 
         public override bool VerifyMove(Mobile from)
         {
-			if (Info != null)
-			{
-				Info.Owner = CoreUtility.AntiTheftCheck(from, Info.Owner, this);
+            if (from is PlayerMobile pm)
+            {
+                if (Info != null)
+                {
+                    Info.Owner = CoreUtility.AntiTheftCheck(pm, Info.Owner, this);
 
-				Info.CloseCardGump();
-			}
-			else
-			{
-				Delete();
-			}
+                    Info.CloseCardGump();
+                }
+                else
+                {
+                    Delete();
+                }
+            }
 
             return base.VerifyMove(from);
         }
@@ -80,15 +83,18 @@ namespace Server.Services.UOBattleCards.Cards
             if (MatchUtility.InMatch(from, true))
                 return;
 
-            if (Info.Owner == from || from.AccessLevel != AccessLevel.Player)
+            if (from is PlayerMobile pm)
             {
-                BaseGump.SendGump(Info.GetCardGump());
+                if (Info.Owner == pm || pm.AccessLevel > AccessLevel.Player)
+                {
+                    BaseGump.SendGump(Info.GetCardGump());
 
-                base.OnDoubleClick(from);
-            }
-            else
-            {
-				Info.Owner = CoreUtility.AntiTheftCheck(from, Info.Owner, this);
+                    base.OnDoubleClick(pm);
+                }
+                else
+                {
+                    Info.Owner = CoreUtility.AntiTheftCheck(pm, Info.Owner, this);
+                }
             }
         }
 
@@ -106,6 +112,14 @@ namespace Server.Services.UOBattleCards.Cards
             Info = new CardInfo();
 
             Info.CardDeserialize(reader);
+
+            if (Info.Owner == null || Info.Owner is PlayerMobile)
+            {
+            }
+            else
+            {
+                Delete();
+            }
         }
     }
 }

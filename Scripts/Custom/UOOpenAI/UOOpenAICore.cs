@@ -149,7 +149,14 @@ namespace Server.Custom.UOOpenAI
 
             var prompt = player.IsStaff() ? $"STAFF:{speech}" : $"{vendor.GetType().Name}:{speech}";
 
-            File.WriteAllText(Path.Combine(PromptPath, $"{player.Name}_{vendor.Name}.txt"), prompt);
+            try
+            {
+                File.WriteAllText(Path.Combine(PromptPath, $"{player.Name}_{vendor.Name}.txt"), prompt);
+            }
+            catch
+            {
+                vendor.Emote(RandomResponse());
+            }
         }
 
         private static void InitializeResponseWatcher()

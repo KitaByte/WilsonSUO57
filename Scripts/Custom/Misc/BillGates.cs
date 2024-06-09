@@ -19,10 +19,10 @@ namespace Server.Mobiles
 
             SetStr(55);
             SetDex(33);
-            SetInt(80);
+            SetInt(20);
 
-            Fame = 5000;
-            Karma = -2500;
+            Fame = 20000;
+            Karma = -20000;
         }
 
         public override bool HandlesOnSpeech(Mobile from)

@@ -19,7 +19,11 @@ namespace Server.Custom.Misc
                 {
                     GoldenFerret ferret = new GoldenFerret();
 
-                    ferret.MoveToWorld(e.Corpse.Location, e.Corpse.Map);
+                    Point3D loc = e.Corpse.Location;
+
+                    loc = e.Corpse.Map.GetRandomSpawnPoint(new Rectangle2D(loc.X - 5, loc.Y - 5, 10, 10));
+
+                    ferret.MoveToWorld(loc, e.Corpse.Map);
 
                     ferret.BoltEffect(2734);
                 }
@@ -74,7 +78,7 @@ namespace Server.Custom.Misc
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (!_CountTimer.Running && InRange(m, 10))
+            if (_CountTimer != null && !_CountTimer.Running && InRange(m, 10))
             {
                 _CountTimer.Start();
             }
@@ -98,23 +102,26 @@ namespace Server.Custom.Misc
 
         public override void OnThink()
         {
-            if (Combatant != null && InRange(Combatant, Counter))
+            if (Combatant != null)
             {
-                Combatant = null;
-
-                if (Utility.RandomDouble() < 0.5)
+                if (InRange(Combatant, Counter))
                 {
-                    Point3D loc = Map.GetRandomSpawnPoint(new Rectangle2D(Location.X - 20, Location.Y - 20, 40, 40));
+                    if (Utility.RandomDouble() < 0.1)
+                    {
+                        Point3D loc = Map.GetRandomSpawnPoint(new Rectangle2D(Location.X - 20, Location.Y - 20, 40, 40));
 
-                    MoveToWorld(loc, Map);
+                        MoveToWorld(loc, Map);
 
-                    BoltEffect(2734);
+                        BoltEffect(2734);
+                    }
+                }
+                else
+                {
+                    Combatant = null;
                 }
             }
-            else
-            {
-                base.OnThink();
-            }
+
+            base.OnThink();
         }
 
         public GoldenFerret(Serial serial) : base(serial)

@@ -124,6 +124,7 @@ namespace Server.Items
                 return 100;
             }
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

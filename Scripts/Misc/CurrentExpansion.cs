@@ -24,7 +24,7 @@ namespace Server
             
 			TownCryerSystem.Enabled = Core.TOL;
 
-			ObjectPropertyList.Enabled = Core.AOS;
+            ObjectPropertyList.Enabled = Core.AOS;
 
             Mobile.InsuranceEnabled = Core.AOS && !Siege.SiegeShard;
 			Mobile.VisibleDamageType = Core.AOS ? VisibleDamageType.Related : VisibleDamageType.None;
